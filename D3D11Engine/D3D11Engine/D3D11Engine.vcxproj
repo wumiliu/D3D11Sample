@@ -45,6 +45,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../D3D11Engine;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -65,7 +66,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sample\Sample.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="Windows\D3D11App.cpp" />
+    <ClCompile Include="Windows\GameTimer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\HpD3D9Type.h" />
+    <ClInclude Include="Sample\Sample.h" />
+    <ClInclude Include="Windows\D3D11App.h" />
+    <ClInclude Include="Windows\GameTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

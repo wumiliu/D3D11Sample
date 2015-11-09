@@ -7,10 +7,39 @@
     <Filter Include="src">
       <UniqueIdentifier>{a16b9a56-c762-4192-9354-a3e7ca2e73af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{59ab16a5-6d1b-43dd-a23f-43c20992c39b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sample">
+      <UniqueIdentifier>{553aa1cb-47cd-4a79-a909-32bc92dacdc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="Windows\D3D11App.cpp">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Windows\GameTimer.cpp">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample\Sample.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Windows\D3D11App.h">
+      <Filter>Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Windows\GameTimer.h">
+      <Filter>Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HpD3D9Type.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\Sample.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
