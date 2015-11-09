@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)VS2013_Proj\Tmp\Link\$(ProjectName)\$(ConfigurationName)</OutDir>
+    <IntDir>$(SolutionDir)VS2013_Proj\Tmp\Complie\$(ProjectName)\$(ConfigurationName)</IntDir>
+    <_PropertySheetDisplayName>Exe</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile />
+    <Link>
+      <OutputFile>$(SolutionDir)VS2013_Proj\Bin\$(ConfigurationName)\$(ProjectName).exe</OutputFile>
+      <ImportLibrary>$(SolutionDir)VS2013_Proj\Lib\$(ConfigurationName)\(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SolutionDir)VS2013_Proj/lib/$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

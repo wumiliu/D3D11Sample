@@ -1,0 +1,1 @@
+$(SolutionDir)VS2013_Proj\Bin\Debug\$(ProjectName).exe
