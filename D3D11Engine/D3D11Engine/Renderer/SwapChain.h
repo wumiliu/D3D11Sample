@@ -31,7 +31,8 @@ public:
 	void SetBackBufferRenderTarget();
 	void Clear();
 	void Flip();
-
+	void TurnZBufferOn();
+	void TurnZBufferOff();
 	bool GetState(){ return m_bInit; }
 public:
 	int					m_nWidth;

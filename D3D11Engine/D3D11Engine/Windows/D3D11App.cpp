@@ -324,3 +324,58 @@ void D3D11App::CalculateFrameStats()
 	}
 
 }
+
+void D3D11App::OnMouseDown(WPARAM btnState, int x, int y)
+{
+	bMouseDown = true;
+	if (btnState == 1)
+	{
+		mouseLast.bLeftDown = true;
+	}
+	else
+	{
+		mouseLast.bLeftDown = false;
+	}
+	mouseLast.X = x;
+	mouseLast.Y = y;
+}
+
+void D3D11App::OnMouseUp(WPARAM btnState, int x, int y)
+{
+	bMouseDown = false;
+	if (btnState == 1)
+	{
+		mouseLast.bLeftDown = true;
+	}
+	else
+	{
+		mouseLast.bLeftDown = false;
+	}
+	mouseLast.X = x;
+	mouseLast.Y = y;
+}
+
+void D3D11App::OnMouseMove(WPARAM btnState, int x, int y)
+{
+	if (bMouseDown)
+	{
+		MousePos _tmp(x, y);
+		x -= mouseLast.X;
+		y -= mouseLast.Y;
+		mouseLast.X = _tmp.X;
+		mouseLast.Y = _tmp.Y;
+		if (mouseLast.bLeftDown)
+		{
+			
+		}
+		else
+		{
+	
+		}
+	}
+}
+
+void D3D11App::OnMouseWheel(short zDelta, int x, int y)
+{
+
+}

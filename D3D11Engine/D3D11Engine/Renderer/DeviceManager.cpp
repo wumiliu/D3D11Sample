@@ -93,4 +93,15 @@ DeviceManager& DeviceManager::GetInstance()
 	return *GetInstancePtr();
 }
 
+HRESULT DeviceManager::CreateInputLayout(LayoutVector vecLayout, const void *pBuffer, int nSize, ID3D11InputLayout **ppInputLayout)
+{
+	HRESULT result = m_pd3dDevice->CreateInputLayout(
+		&vecLayout[0],
+		vecLayout.size(),
+		pBuffer,
+		nSize,
+		(ID3D11InputLayout**)ppInputLayout);
+	return result;
+}
+
 

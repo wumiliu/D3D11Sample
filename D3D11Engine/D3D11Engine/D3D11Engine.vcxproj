@@ -45,10 +45,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../D3D11Engine;include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../D3D11Engine;include;../SDK/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../SDK/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -66,13 +67,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseCode\GeometryGenerator.cpp" />
+    <ClCompile Include="BaseCode\BaseFunc.cpp" />
+    <ClCompile Include="BaseCode\DXFunction.cpp" />
+    <ClCompile Include="BaseCode\GeometryGens.cpp" />
+    <ClCompile Include="BaseCode\Texture\DDSTextureLoader.cpp" />
+    <ClCompile Include="BaseCode\Texture\Texture.cpp" />
+    <ClCompile Include="BaseCode\Texture\TextureMgr.cpp" />
     <ClCompile Include="Framework\Frustum.cpp" />
+    <ClCompile Include="Framework\GameObject.cpp" />
+    <ClCompile Include="Framework\SkyBox.cpp" />
     <ClCompile Include="Math\MathHelper.cpp" />
     <ClCompile Include="Math\SimpleMath.cpp" />
+    <ClCompile Include="Renderer\CommonStates.cpp" />
+    <ClCompile Include="Renderer\ConstantBuffer.cpp" />
     <ClCompile Include="Renderer\D3D11Mesh.cpp" />
+    <ClCompile Include="Renderer\D3D11RendererMaterial.cpp" />
     <ClCompile Include="Renderer\DeviceManager.cpp" />
+    <ClCompile Include="Renderer\GemoetryRender.cpp" />
+    <ClCompile Include="Renderer\Shader.cpp" />
     <ClCompile Include="Renderer\SwapChain.cpp" />
+    <ClCompile Include="Renderer\VertexTypes.cpp" />
     <ClCompile Include="Sample\Sample.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
     <ClCompile Include="Scene\Component.cpp" />
@@ -86,16 +100,34 @@
     <ClCompile Include="Windows\GameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseCode\GeometryGenerator.h" />
+    <ClInclude Include="BaseCode\BaseFunc.h" />
+    <ClInclude Include="BaseCode\DXFunction.h" />
+    <ClInclude Include="BaseCode\GeometryGens.h" />
+    <ClInclude Include="BaseCode\Texture\dds.h" />
+    <ClInclude Include="BaseCode\Texture\DDSTextureLoader.h" />
+    <ClInclude Include="BaseCode\Texture\pch.h" />
+    <ClInclude Include="BaseCode\Texture\PlatformHelpers.h" />
+    <ClInclude Include="BaseCode\Texture\Texture.h" />
+    <ClInclude Include="BaseCode\Texture\TextureMgr.h" />
     <ClInclude Include="Framework\Frustum.h" />
+    <ClInclude Include="Framework\GameObject.h" />
+    <ClInclude Include="Framework\SkyBox.h" />
+    <ClInclude Include="include\DirectXHelpers.h" />
+    <ClInclude Include="include\GraphicsDefs.h" />
     <ClInclude Include="include\HpD3D9Type.h" />
     <ClInclude Include="include\object.h" />
     <ClInclude Include="include\StringHash.h" />
     <ClInclude Include="Math\MathHelper.h" />
     <ClInclude Include="Math\SimpleMath.h" />
+    <ClInclude Include="Renderer\CommonStates.h" />
+    <ClInclude Include="Renderer\ConstantBuffer.h" />
     <ClInclude Include="Renderer\D3D11Mesh.h" />
+    <ClInclude Include="Renderer\D3D11RendererMaterial.h" />
     <ClInclude Include="Renderer\DeviceManager.h" />
+    <ClInclude Include="Renderer\GemoetryRender.h" />
+    <ClInclude Include="Renderer\Shader.h" />
     <ClInclude Include="Renderer\SwapChain.h" />
+    <ClInclude Include="Renderer\VertexTypes.h" />
     <ClInclude Include="Sample\Sample.h" />
     <ClInclude Include="Scene\Camera.h" />
     <ClInclude Include="Scene\Component.h" />

@@ -40,10 +40,10 @@ public:
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Convenience overrides for handling mouse input.
-	virtual void OnMouseDown(WPARAM btnState, int x, int y){};
-	virtual void OnMouseUp(WPARAM btnState, int x, int y){};
-	virtual void OnMouseMove(WPARAM btnState, int x, int y){};
-	virtual void OnMouseWheel(short zDelta, int x, int y){};
+	virtual void OnMouseDown(WPARAM btnState, int x, int y);
+	virtual void OnMouseUp(WPARAM btnState, int x, int y);
+	virtual void OnMouseMove(WPARAM btnState, int x, int y);
+	virtual void OnMouseWheel(short zDelta, int x, int y);
 	virtual void OnLButtonDblClk(WPARAM btnState, int x, int y){};
 	virtual void OnDragFinish(const char* filName){};
 protected:

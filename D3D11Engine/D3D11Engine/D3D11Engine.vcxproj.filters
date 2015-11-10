@@ -28,6 +28,9 @@
     <Filter Include="Renderer">
       <UniqueIdentifier>{474a2a26-d3de-4067-8ba7-def3f3aab011}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BaseCode\Texture">
+      <UniqueIdentifier>{95d0d71c-a8ff-4e51-9ad1-b33225cb5b1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -72,9 +75,6 @@
     <ClCompile Include="Framework\Frustum.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="BaseCode\GeometryGenerator.cpp">
-      <Filter>BaseCode</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\D3D11Mesh.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
@@ -83,6 +83,48 @@
     </ClCompile>
     <ClCompile Include="Renderer\SwapChain.cpp">
       <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\GemoetryRender.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\D3D11RendererMaterial.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\VertexTypes.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Shader.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCode\BaseFunc.cpp">
+      <Filter>BaseCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\ConstantBuffer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCode\Texture\DDSTextureLoader.cpp">
+      <Filter>BaseCode\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCode\DXFunction.cpp">
+      <Filter>BaseCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\SkyBox.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\CommonStates.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCode\GeometryGens.cpp">
+      <Filter>BaseCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCode\Texture\Texture.cpp">
+      <Filter>BaseCode\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCode\Texture\TextureMgr.cpp">
+      <Filter>BaseCode\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +173,6 @@
     <ClInclude Include="Framework\Frustum.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="BaseCode\GeometryGenerator.h">
-      <Filter>BaseCode</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\SwapChain.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -142,6 +181,63 @@
     </ClInclude>
     <ClInclude Include="Renderer\DeviceManager.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\GemoetryRender.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\D3D11RendererMaterial.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\VertexTypes.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Shader.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\BaseFunc.h">
+      <Filter>BaseCode</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GraphicsDefs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\ConstantBuffer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectXHelpers.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\Texture\dds.h">
+      <Filter>BaseCode\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\Texture\DDSTextureLoader.h">
+      <Filter>BaseCode\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\Texture\pch.h">
+      <Filter>BaseCode\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\Texture\PlatformHelpers.h">
+      <Filter>BaseCode\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\DXFunction.h">
+      <Filter>BaseCode</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\SkyBox.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\CommonStates.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\GeometryGens.h">
+      <Filter>BaseCode</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\Texture\TextureMgr.h">
+      <Filter>BaseCode\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCode\Texture\Texture.h">
+      <Filter>BaseCode\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

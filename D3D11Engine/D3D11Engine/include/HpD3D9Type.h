@@ -80,16 +80,6 @@ typedef int   int32;
 #endif
 
 
-template<typename T>
-void SafeRelease(T *t)
-{
-	if (t)
-	{
-		t->Release();
-		t = NULL;
-	}
-}
-
 typedef std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutVector;
 typedef std::string String;
 

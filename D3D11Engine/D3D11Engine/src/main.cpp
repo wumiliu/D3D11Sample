@@ -10,6 +10,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	{
 		freopen_s(&f, "CONOUT$", "w", stdout);
 	}
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
 	Sample theApp(hInstance, 1024, 600);

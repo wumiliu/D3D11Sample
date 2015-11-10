@@ -1,5 +1,6 @@
 #include "SwapChain.h"
 #include "DeviceManager.h"
+#include "CommonStates.h"
 
 
 SwapChain::SwapChain()
@@ -199,5 +200,17 @@ ID3D11ShaderResourceView* SwapChain::GetResourceView()
 	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
 	g_objDeviecManager.GetImmediateContext()->CopyResource(texEx, backBuffer);
 	return mSRV;
+}
+
+void SwapChain::TurnZBufferOn()
+{
+	ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
+	d3dcontext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
+}
+
+void SwapChain::TurnZBufferOff()
+{
+	ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
+	d3dcontext->OMSetDepthStencilState(g_objStates.DepthNone(), 1);
 }
 

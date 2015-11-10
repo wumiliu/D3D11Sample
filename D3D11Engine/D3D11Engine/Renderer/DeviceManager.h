@@ -23,6 +23,8 @@ public:
 	{
 		return m_pImmediateContext;
 	}
+	HRESULT CreateInputLayout(LayoutVector vecLayout, const void *pBuffer, int nSize,ID3D11InputLayout **ppInputLayout);
+
 private:
 	DeviceManager();
 	~DeviceManager();
