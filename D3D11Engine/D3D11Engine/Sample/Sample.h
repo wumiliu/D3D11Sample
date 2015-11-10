@@ -12,7 +12,7 @@ public:
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 protected:
-	void InitResource();
+	virtual void InitResource();
 	void CreateScrene();
 	std::shared_ptr<class Scene> scene_; 
 	class HpNode* cameraNode_;

@@ -84,9 +84,11 @@
     <ClCompile Include="Renderer\D3D11RendererMaterial.cpp" />
     <ClCompile Include="Renderer\DeviceManager.cpp" />
     <ClCompile Include="Renderer\GemoetryRender.cpp" />
+    <ClCompile Include="Renderer\RenderTarget2D.cpp" />
     <ClCompile Include="Renderer\Shader.cpp" />
     <ClCompile Include="Renderer\SwapChain.cpp" />
     <ClCompile Include="Renderer\VertexTypes.cpp" />
+    <ClCompile Include="Sample\DeferredLighting.cpp" />
     <ClCompile Include="Sample\Sample.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
     <ClCompile Include="Scene\Component.cpp" />
@@ -125,9 +127,11 @@
     <ClInclude Include="Renderer\D3D11RendererMaterial.h" />
     <ClInclude Include="Renderer\DeviceManager.h" />
     <ClInclude Include="Renderer\GemoetryRender.h" />
+    <ClInclude Include="Renderer\RenderTarget2D.h" />
     <ClInclude Include="Renderer\Shader.h" />
     <ClInclude Include="Renderer\SwapChain.h" />
     <ClInclude Include="Renderer\VertexTypes.h" />
+    <ClInclude Include="Sample\DeferredLighting.h" />
     <ClInclude Include="Sample\Sample.h" />
     <ClInclude Include="Scene\Camera.h" />
     <ClInclude Include="Scene\Component.h" />

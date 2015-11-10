@@ -199,6 +199,7 @@ ID3D11ShaderResourceView* SwapChain::GetResourceView()
 	//获取后缓冲区地址
 	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
 	g_objDeviecManager.GetImmediateContext()->CopyResource(texEx, backBuffer);
+	SAFE_RELEASE(backBuffer);
 	return mSRV;
 }
 

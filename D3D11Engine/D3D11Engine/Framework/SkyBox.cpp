@@ -24,6 +24,8 @@ void SkyBox::InitResource()
 
 	GeoGen::MeshData meshData;
 	GeoGen::CreateSphere(1, 5, 5, meshData);
+	GeoGen::CreateBox(1, 1, 1, meshData);
+
 	bool bBuild = GemoetryRenderPtr->BuildBuffers(meshData);
 	m_pSrv = D3DX11CreateShaderResourceViewFromFile(g_objDeviecManager.GetDevice(), "Data\\SkyBox\\snowcube1024.dds");
 

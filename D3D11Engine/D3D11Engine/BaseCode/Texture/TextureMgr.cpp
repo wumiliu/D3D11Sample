@@ -264,7 +264,7 @@ void TextureMgr::Save(ID3D11Texture2D* pBuffer, const char* filename)
 		FreeImage_Unload(newDib);
 	}
 	m_deviceContext->Unmap(texEx, 0);
-
+	SAFE_RELEASE(texEx);
 	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
 	memset(&SRVDesc, 0, sizeof(SRVDesc));
 	SRVDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

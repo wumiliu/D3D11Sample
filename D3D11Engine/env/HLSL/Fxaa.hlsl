@@ -9,10 +9,12 @@ FxaaVS_Output VS(uint id : SV_VertexID) {
 	Output.Pos = float4(Output.Tex * float2(2.0f, -2.0f) + float2(-1.0f, 1.0f), 0.0f, 1.0f);
 	return Output;
 }
+Texture2D shaderTexture;
+SamplerState SampleType;
 
 float4 PS(FxaaVS_Output Input) : SV_TARGET
 {
 	float4 textureColor = { 1.0f, 0.0f, 0.0f, 1.0f };
-	//textureColor = shaderTexture.Sample(SampleType, Input.Tex);
+	textureColor = shaderTexture.Sample(SampleType, Input.Tex);
 	return textureColor;
 }
