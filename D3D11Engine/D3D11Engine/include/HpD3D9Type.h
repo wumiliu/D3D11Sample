@@ -27,10 +27,16 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <assert.h>
+#include <unordered_map>
+#include <unordered_set>
 
+#include "Math\SimpleMath.h"
+using namespace DirectX;
+using namespace SimpleMath;
 #pragma comment(lib, "winmm.lib") 
 #pragma comment(lib, "kernel32.lib") 
-using namespace DirectX;
+
 
 #ifndef GRAPHIC_API
 #if defined(_WIN32)
@@ -84,25 +90,12 @@ void SafeRelease(T *t)
 	}
 }
 
-struct  MousePos
-{
-	int X;
-	int Y;
-	bool bLeftDown;
-	MousePos()
-	{
-		X = 0;
-		Y = 0;
-		bLeftDown = false;
-	}
-	MousePos(int x, int y)
-	{
-		X = x;
-		Y = y;
-		bLeftDown = false;
-	}
-};
 typedef std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutVector;
 typedef std::string String;
+
+#define HP_HashMap std::unordered_map
+#define HP_HashMultiMap std::unordered_multimap
+#define HP_HashSet std::unordered_set
+#define HP_HashMultiSet std::unordered_multiset
 
 #endif

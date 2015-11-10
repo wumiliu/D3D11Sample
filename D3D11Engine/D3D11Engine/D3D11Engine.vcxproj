@@ -66,16 +66,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseCode\GeometryGenerator.cpp" />
+    <ClCompile Include="Framework\Frustum.cpp" />
+    <ClCompile Include="Math\MathHelper.cpp" />
+    <ClCompile Include="Math\SimpleMath.cpp" />
+    <ClCompile Include="Renderer\D3D11Mesh.cpp" />
+    <ClCompile Include="Renderer\DeviceManager.cpp" />
+    <ClCompile Include="Renderer\SwapChain.cpp" />
     <ClCompile Include="Sample\Sample.cpp" />
+    <ClCompile Include="Scene\Camera.cpp" />
+    <ClCompile Include="Scene\Component.cpp" />
+    <ClCompile Include="Scene\HpNode.cpp" />
+    <ClCompile Include="Scene\Light.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\Skeleton.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\StringHash.cpp" />
     <ClCompile Include="Windows\D3D11App.cpp" />
     <ClCompile Include="Windows\GameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseCode\GeometryGenerator.h" />
+    <ClInclude Include="Framework\Frustum.h" />
     <ClInclude Include="include\HpD3D9Type.h" />
+    <ClInclude Include="include\object.h" />
+    <ClInclude Include="include\StringHash.h" />
+    <ClInclude Include="Math\MathHelper.h" />
+    <ClInclude Include="Math\SimpleMath.h" />
+    <ClInclude Include="Renderer\D3D11Mesh.h" />
+    <ClInclude Include="Renderer\DeviceManager.h" />
+    <ClInclude Include="Renderer\SwapChain.h" />
     <ClInclude Include="Sample\Sample.h" />
+    <ClInclude Include="Scene\Camera.h" />
+    <ClInclude Include="Scene\Component.h" />
+    <ClInclude Include="Scene\HpNode.h" />
+    <ClInclude Include="Scene\Light.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\Skeleton.h" />
     <ClInclude Include="Windows\D3D11App.h" />
     <ClInclude Include="Windows\GameTimer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Math\SimpleMath.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

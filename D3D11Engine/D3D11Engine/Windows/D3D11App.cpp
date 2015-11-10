@@ -1,6 +1,8 @@
 #include "D3D11App.h"
 #include <WindowsX.h>
 #include <sstream>
+#include "Renderer/SwapChain.h"
+#include "Renderer/DeviceManager.h"
 
 
 namespace
@@ -31,6 +33,9 @@ D3D11App::D3D11App(HINSTANCE hInstance)
 	mResizing(false)
 {
 	gd3dApp = this;
+	SwapChainPtr = std::make_shared<SwapChain>();
+	bMouseDown = false;
+
 }
 
 D3D11App::~D3D11App()
@@ -109,6 +114,90 @@ LRESULT D3D11App::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		OnDragFinish(strFileName);
 	}
 	return 0;
+	// WM_SIZE is sent when the user resizes the window.  
+	case WM_SIZE:
+		// Save the new client area dimensions.
+		mClientWidth = LOWORD(lParam);
+		mClientHeight = HIWORD(lParam);
+		if (SwapChainPtr->GetState())
+		{
+			if (wParam == SIZE_MINIMIZED)
+			{
+				mAppPaused = true;
+				mMinimized = true;
+				mMaximized = false;
+			}
+			else if (wParam == SIZE_MAXIMIZED)
+			{
+				mAppPaused = false;
+				mMinimized = false;
+				mMaximized = true;
+				OnResize();
+			}
+			else if (wParam == SIZE_RESTORED)
+			{
+
+				// Restoring from minimized state?
+				if (mMinimized)
+				{
+					mAppPaused = false;
+					mMinimized = false;
+					OnResize();
+				}
+
+				// Restoring from maximized state?
+				else if (mMaximized)
+				{
+					mAppPaused = false;
+					mMaximized = false;
+					OnResize();
+				}
+				else if (mResizing)
+				{
+					// If user is dragging the resize bars, we do not resize 
+					// the buffers here because as the user continuously 
+					// drags the resize bars, a stream of WM_SIZE messages are
+					// sent to the window, and it would be pointless (and slow)
+					// to resize for each WM_SIZE message received from dragging
+					// the resize bars.  So instead, we reset after the user is 
+					// done resizing the window and releases the resize bars, which 
+					// sends a WM_EXITSIZEMOVE message.
+				}
+				else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
+				{
+					OnResize();
+				}
+			}
+		}
+		return 0;
+		// WM_EXITSIZEMOVE is sent when the user grabs the resize bars.
+	case WM_ENTERSIZEMOVE:
+		mAppPaused = true;
+		mResizing = true;
+		mTimer.Stop();
+		mClientWidthOld = mClientWidth;
+		mClientHeightOld = mClientHeight;
+		return 0;
+
+		// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
+		// Here we reset everything based on the new window dimensions.
+	case WM_EXITSIZEMOVE:
+
+		mAppPaused = false;
+		mResizing = false;
+		mTimer.Start();
+		if ((mClientWidthOld != mClientWidth) && (mClientHeightOld != mClientHeight))
+		{
+			OnResize();
+		}
+		return 0;
+
+		/*
+		case WM_PAINT:
+		hDC = BeginPaint(hwnd, &paintStruct);
+		EndPaint(hwnd, &paintStruct);
+		break;*/
+		// Catch this message so to prevent the window from becoming too small.
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
@@ -187,12 +276,16 @@ int D3D11App::Run()
 
 bool D3D11App::InitDirect3D()
 {
+	SwapChainPtr->Initialize(mhMainWnd, mClientWidth, mClientHeight);
+	m_d3dDevice = g_objDeviecManager.GetDevice();
+	m_deviceContext = g_objDeviecManager.GetImmediateContext();
 
 	return true;
 }
 
 void D3D11App::OnResize()
 {
+	SwapChainPtr->OnResize(mClientWidth, mClientHeight);
 	printf("OnResize");
 }
 
@@ -231,58 +324,3 @@ void D3D11App::CalculateFrameStats()
 	}
 
 }
-
-void D3D11App::OnMouseDown(WPARAM btnState, int x, int y)
-{
-	bMouseDown = true;
-	if (btnState == 1)
-	{
-		mouseLast.bLeftDown = true;
-	}
-	else
-	{
-		mouseLast.bLeftDown = false;
-	}
-	mouseLast.X = x;
-	mouseLast.Y = y;
-}
-
-void D3D11App::OnMouseUp(WPARAM btnState, int x, int y)
-{
-	bMouseDown = false;
-	if (btnState == 1)
-	{
-		mouseLast.bLeftDown = true;
-	}
-	else
-	{
-		mouseLast.bLeftDown = false;
-	}
-	mouseLast.X = x;
-	mouseLast.Y = y;
-}
-
-void D3D11App::OnMouseMove(WPARAM btnState, int x, int y)
-{
-	if (bMouseDown)
-	{
-		MousePos _tmp(x, y);
-		x -= mouseLast.X;
-		y -= mouseLast.Y;
-		mouseLast.X = _tmp.X;
-		mouseLast.Y = _tmp.Y;
-		if (mouseLast.bLeftDown)
-		{
-			
-		}
-		else
-		{
-
-		}
-	}
-}
-void D3D11App::OnMouseWheel(short zDelta, int x, int y)
-{
-
-}
-
