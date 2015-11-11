@@ -16,3 +16,5 @@
 #define BASEOBJECT(typeName) \
     public: \
         static StringHash GetBaseTypeStatic() { static const StringHash baseTypeStatic(#typeName); return baseTypeStatic; } 
+
+

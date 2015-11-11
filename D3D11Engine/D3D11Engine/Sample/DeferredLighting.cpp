@@ -1,16 +1,8 @@
 #include "DeferredLighting.h"
+#include "SampleBase.h"
 
-#include "Renderer/SwapChain.h"
-#include "Renderer/D3D11RendererMaterial.h"
-#include "Renderer/GemoetryRender.h"
-#include "Scene/Scene.h"
-#include "Scene/Camera.h"
-#include "Framework/SkyBox.h"
-#include "Math/MathHelper.h"
-#include "Renderer/RenderTarget2D.h"
 
-DeferredLighting::DeferredLighting(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/):
-Sample(hInstance,nWidth,nHeight)
+SAMPLE_CPP(DeferredLighting)
 {
 
 }
@@ -76,8 +68,9 @@ void DeferredLighting::DrawScene()
 	m_MaterialGBuffer->PSSetShaderResources(TU_DIFFUSE, pSrv);
 	m_MaterialGBuffer->Apply();
 	m_deviceContext->Draw(3, 0);
-	
+	g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, pSrv);
 	pSrv = colorRT->GetSRView();
+
 	SwapChainPtr->Begin();
 	m_MaterialPtr->PSSetShaderResources(TU_DIFFUSE, pSrv);
 	m_MaterialPtr->Apply();

@@ -1,11 +1,6 @@
 #include "Sample.h"
-#include "Renderer/SwapChain.h"
-#include "Renderer/D3D11RendererMaterial.h"
-#include "Renderer/GemoetryRender.h"
-#include "Scene/Scene.h"
-#include "Scene/Camera.h"
-#include "Framework/SkyBox.h"
-#include "Math/MathHelper.h"
+#include "SampleBase.h"
+
 Sample::Sample(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/):
 D3D11App(hInstance)
 {
@@ -26,7 +21,7 @@ void Sample::InitResource()
 	gameObject.SetTexture("Data\\Texture\\Ice.dds");
 	gameSphereObject.InitResource(GEOMETRY_TYPE_SPHERE);
 	gameSphereObject.SetTexture("Data\\Texture\\wall01.dds");
-
+	g_objSprite.ResetSize(mClientWidth, mClientHeight);
 	CreateScrene();
 }
 

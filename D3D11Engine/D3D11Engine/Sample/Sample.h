@@ -1,6 +1,17 @@
 #pragma once
 #include "Windows/D3D11App.h"
 #include "Framework/GameObject.h"
+
+#define SAMPLE_H(typeName) \
+	 public: \
+	 typeName(HINSTANCE hInstance, int nWidth = 1024, int nHeight = 600);
+
+#define SAMPLE_CPP(typeName) \
+	typeName:: typeName(HINSTANCE hInstance, int nWidth, int nHeight):\
+	 Sample(hInstance,nWidth,nHeight)
+
+typedef std::shared_ptr<class RenderTarget2D> RenderTarget2DPtr;
+
 class Sample :public D3D11App
 {
 public:

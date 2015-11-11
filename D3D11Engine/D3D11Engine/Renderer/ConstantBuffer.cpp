@@ -1,12 +1,13 @@
 #include "ConstantBuffer.h"
 #include "DeviceManager.h"
 
-ConstantBuffer::ConstantBuffer(UINT StartSlot_)
+ConstantBuffer::ConstantBuffer(UINT StartSlot_, ShaderType type_)
 {
 	pConstantBuffer = NULL;
 	bMap = false;
 	dataPtr = NULL;
 	StartSlot = StartSlot_;
+	Type = type_;
 }
 
 
@@ -26,16 +27,18 @@ void ConstantBuffer::SetSize(int size_)
 {
 	Release();
 	D3D11_BUFFER_DESC bufferDesc;
-	memset(&bufferDesc, 0, sizeof bufferDesc);
 
-	bufferDesc.ByteWidth = size_;
+	// Round up to next 16 bytes
+	size_ += 15;
+	size_ &= 0xfffffff0;
+
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.ByteWidth = size_;
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
-
-	g_objDeviecManager.GetDevice()->CreateBuffer(&bufferDesc, 0, (ID3D11Buffer**)&pConstantBuffer);
+	g_objDeviecManager.GetDevice()->CreateBuffer(&bufferDesc, NULL, (ID3D11Buffer**)&pConstantBuffer);
 	if (!pConstantBuffer)
 	{
 		printf("Failed to create constant buffer");
@@ -64,5 +67,13 @@ void ConstantBuffer::Apply()
 		dataPtr = NULL;
 		g_objDeviecManager.GetImmediateContext()->Unmap(pConstantBuffer, 0);
 	}
-	g_objDeviecManager.GetImmediateContext()->VSSetConstantBuffers(StartSlot, 1, &pConstantBuffer);
+	if (Type == VS)
+	{
+		g_objDeviecManager.GetImmediateContext()->VSSetConstantBuffers(StartSlot, 1, &pConstantBuffer);
+	}
+	else if (Type == PS)
+	{
+		g_objDeviecManager.GetImmediateContext()->PSSetConstantBuffers(StartSlot, 1, &pConstantBuffer);
+
+	}
 }

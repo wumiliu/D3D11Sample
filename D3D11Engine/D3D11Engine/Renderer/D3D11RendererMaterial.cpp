@@ -102,7 +102,14 @@ void D3D11RendererMaterial::PSSetShaderResources(TextureUnit texture, ID3D11Shad
 	bool bTexture = psShader.useTextureUnit_[texture];
 	if (bTexture)
 	{
-		g_objDeviecManager.GetImmediateContext()->PSSetShaderResources(texture, 1, &pShaderResourceViews);
+		if (pShaderResourceViews)
+		{
+			g_objDeviecManager.GetImmediateContext()->PSSetShaderResources(texture, 1, &pShaderResourceViews);
+		}
+		else
+		{
+			printf("pShaderResourceViews is null");
+		}
 	}
 	else
 	{

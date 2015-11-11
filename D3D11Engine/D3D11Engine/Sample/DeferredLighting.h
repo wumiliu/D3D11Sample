@@ -3,11 +3,11 @@
 /************************************************************************/
 /* 延迟光照的实现                                                                     */
 /************************************************************************/
-typedef std::shared_ptr<class RenderTarget2D> RenderTarget2DPtr;
+
 class DeferredLighting : public Sample
 {
 public:
-	DeferredLighting(HINSTANCE hInstance, int nWidth = 1024, int nHeight = 600);
+	SAMPLE_H(DeferredLighting);
 	~DeferredLighting();
 	virtual void DrawScene();
 

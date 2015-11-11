@@ -86,9 +86,11 @@
     <ClCompile Include="Renderer\GemoetryRender.cpp" />
     <ClCompile Include="Renderer\RenderTarget2D.cpp" />
     <ClCompile Include="Renderer\Shader.cpp" />
+    <ClCompile Include="Renderer\Sprite.cpp" />
     <ClCompile Include="Renderer\SwapChain.cpp" />
     <ClCompile Include="Renderer\VertexTypes.cpp" />
     <ClCompile Include="Sample\DeferredLighting.cpp" />
+    <ClCompile Include="Sample\LightSample.cpp" />
     <ClCompile Include="Sample\Sample.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
     <ClCompile Include="Scene\Component.cpp" />
@@ -97,6 +99,7 @@
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\Skeleton.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MaterialMgr.cpp" />
     <ClCompile Include="src\StringHash.cpp" />
     <ClCompile Include="Windows\D3D11App.cpp" />
     <ClCompile Include="Windows\GameTimer.cpp" />
@@ -117,6 +120,7 @@
     <ClInclude Include="include\DirectXHelpers.h" />
     <ClInclude Include="include\GraphicsDefs.h" />
     <ClInclude Include="include\HpD3D9Type.h" />
+    <ClInclude Include="include\MaterialMgr.h" />
     <ClInclude Include="include\object.h" />
     <ClInclude Include="include\StringHash.h" />
     <ClInclude Include="Math\MathHelper.h" />
@@ -129,10 +133,13 @@
     <ClInclude Include="Renderer\GemoetryRender.h" />
     <ClInclude Include="Renderer\RenderTarget2D.h" />
     <ClInclude Include="Renderer\Shader.h" />
+    <ClInclude Include="Renderer\Sprite.h" />
     <ClInclude Include="Renderer\SwapChain.h" />
     <ClInclude Include="Renderer\VertexTypes.h" />
     <ClInclude Include="Sample\DeferredLighting.h" />
+    <ClInclude Include="Sample\LightSample.h" />
     <ClInclude Include="Sample\Sample.h" />
+    <ClInclude Include="Sample\SampleBase.h" />
     <ClInclude Include="Scene\Camera.h" />
     <ClInclude Include="Scene\Component.h" />
     <ClInclude Include="Scene\HpNode.h" />

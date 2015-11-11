@@ -160,7 +160,7 @@ void Shader::CalculateConstantBufferSizes(ShaderType type_)
 	{
 		if (constantBufferSizes_[i] > 0)
 		{
-			ConstantBufferPtr newShader(new ConstantBuffer(i));
+			ConstantBufferPtr newShader(new ConstantBuffer(i,type_));
 			newShader->SetSize(constantBufferSizes_[i]);
 			constantBufferShaders[i] = newShader;
 		}

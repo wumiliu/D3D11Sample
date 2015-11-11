@@ -63,6 +63,8 @@ HRESULT CommonStates::CreateRasterizerState(D3D11_CULL_MODE cullMode, D3D11_FILL
 	desc.FillMode = fillMode;
 	desc.DepthClipEnable = true;
 	desc.MultisampleEnable = true;
+	//表示按顺时针方向环绕的三角形（相对于观察者）是朝前的
+	desc.FrontCounterClockwise = FALSE;
 	//顺时针为正面
 	//  D3D11_CULL_NONE	= 1, 不进行任何剔除
 	//	D3D11_CULL_FRONT = 2, 按顺时针方向进行剔除

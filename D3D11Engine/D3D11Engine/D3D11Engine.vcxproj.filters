@@ -132,6 +132,15 @@
     <ClCompile Include="Renderer\RenderTarget2D.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Sample\LightSample.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MaterialMgr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Sprite.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -249,6 +258,18 @@
       <Filter>Sample</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\RenderTarget2D.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\LightSample.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\SampleBase.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MaterialMgr.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Sprite.h">
       <Filter>Renderer</Filter>
     </ClInclude>
   </ItemGroup>

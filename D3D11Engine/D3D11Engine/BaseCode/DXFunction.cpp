@@ -18,3 +18,14 @@ ID3D11ShaderResourceView* D3DX11CreateShaderResourceViewFromFile(ID3D11Device* p
 
 	return srv;
 }
+
+DirectX::XMMATRIX GetShow2DMatrix(int nWidth, int nHegith)
+{
+	// Transform NDC space [-1,+1]^2 to screen space [0,1]^2
+	XMMATRIX toTexSpace(
+		0.5f * nWidth, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f * nHegith, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f * nWidth, 0.5f * nHegith, 0.0f, 1.0f);
+	return XMMatrixInverse(NULL, toTexSpace);
+}

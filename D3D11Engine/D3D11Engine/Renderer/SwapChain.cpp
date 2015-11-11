@@ -147,6 +147,10 @@ bool SwapChain::CreateWindowSizeDependentResources()
 	m_viewport.MinDepth = 0.0f;
 	m_viewport.MaxDepth = 1.0f;
 
+	D3D11_VIEWPORT vp = this->GetViewPort();
+	ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
+
+	d3dcontext->RSSetViewports(1, &vp);
 	return true;
 }
 
