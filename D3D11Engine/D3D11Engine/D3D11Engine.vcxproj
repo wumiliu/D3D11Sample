@@ -91,6 +91,7 @@
     <ClCompile Include="Renderer\VertexTypes.cpp" />
     <ClCompile Include="Sample\DeferredLighting.cpp" />
     <ClCompile Include="Sample\LightSample.cpp" />
+    <ClCompile Include="Sample\RenderTargetSample.cpp" />
     <ClCompile Include="Sample\Sample.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
     <ClCompile Include="Scene\Component.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Renderer\VertexTypes.h" />
     <ClInclude Include="Sample\DeferredLighting.h" />
     <ClInclude Include="Sample\LightSample.h" />
+    <ClInclude Include="Sample\RenderTargetSample.h" />
     <ClInclude Include="Sample\Sample.h" />
     <ClInclude Include="Sample\SampleBase.h" />
     <ClInclude Include="Scene\Camera.h" />

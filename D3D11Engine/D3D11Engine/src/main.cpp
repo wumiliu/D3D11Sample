@@ -1,5 +1,6 @@
 
 #include "Sample/Sample.h"
+#include "Sample/RenderTargetSample.h"
 #include "Sample/LightSample.h"
 #include "Sample/DeferredLighting.h"
 

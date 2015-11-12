@@ -141,6 +141,9 @@
     <ClCompile Include="Renderer\Sprite.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Sample\RenderTargetSample.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="Renderer\Sprite.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\RenderTargetSample.h">
+      <Filter>Sample</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
