@@ -13,6 +13,7 @@ public:
 	ID3D11DepthStencilView* GetDepthStencilView() { return m_depthStencilView; }
 	IDXGISwapChain* GetDXGISwapChain(){ return m_pSwapChain; }
 	ID3D11ShaderResourceView* GetResourceView();
+
 	void OnResize(int nWidth, int nHeight);
 	D3D11_VIEWPORT GetViewPort(){ return m_viewport; }
 
@@ -34,6 +35,7 @@ public:
 	void TurnZBufferOn();
 	void TurnZBufferOff();
 	bool GetState(){ return m_bInit; }
+	void SaveDepth();
 public:
 	int					m_nWidth;
 	int					m_nHeight;
@@ -56,5 +58,6 @@ private:
 
 	ID3D11ShaderResourceView* mSRV;
 	ID3D11Texture2D*  texEx;
+
 };
 

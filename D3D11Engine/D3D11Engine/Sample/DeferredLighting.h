@@ -3,7 +3,7 @@
 /************************************************************************/
 /* 延迟光照的实现                                                                     */
 /************************************************************************/
-
+#include "MaterialMgr.h"
 class DeferredLighting : public Sample
 {
 public:
@@ -14,15 +14,19 @@ public:
 protected:
 	virtual void InitResource();
 private:
-	RenderTarget2DPtr colorRT;
-	RenderTarget2DPtr normalRT;
-	RenderTarget2DPtr depthRT;
-	RenderTarget2DPtr lightRT;
+	void Render();
+	void ShowRT();
+	void ShowFXAA();
+private:
+	RenderTarget2DPtr m_TexGBuffer;
+	RenderTarget2DPtr m_TexGBuffer2;
+	RenderTarget2DPtr m_TexGBufResolved2;
+	RenderTarget2DPtr m_TexCoverageMask;
 
-	std::shared_ptr<class D3D11RendererMaterial> m_MaterialMulitPoint;
-	std::shared_ptr<class D3D11RendererMaterial> m_MaterialDeferred;
-	std::shared_ptr<class D3D11RendererMaterial> m_MaterialGBuffer;
-	std::shared_ptr<class D3D11RendererMaterial> m_MaterialPtr;
+	MaterialPtr m_pFillGBufShader;
+	MaterialPtr m_pComplexMaskShader;
+	MaterialPtr m_pLightingShader;
+
 
 };
 

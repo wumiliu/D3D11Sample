@@ -1,7 +1,7 @@
 #include "SwapChain.h"
 #include "DeviceManager.h"
 #include "CommonStates.h"
-
+#include "BaseCode/Texture/TextureMgr.h"
 
 SwapChain::SwapChain()
 {
@@ -139,6 +139,8 @@ bool SwapChain::CreateWindowSizeDependentResources()
 	// Not needed since this is a 2d texture
 	hr = m_pd3dDevice->CreateDepthStencilView(m_depthStencilBuffer, 0, &m_depthStencilView);
 
+
+
 	//创建完两个视图后当然就要绑定到渲染管线
 	m_viewport.TopLeftX = 0.0f;
 	m_viewport.TopLeftY = 0.0f;
@@ -164,7 +166,7 @@ void SwapChain::Begin()
 	D3D11_VIEWPORT vp = this->GetViewPort();
 	d3dcontext->RSSetViewports(1, &vp);
 	//D3D11_CLEAR_DEPTH只清空深度缓冲区
-	d3dcontext->ClearDepthStencilView(this->GetDepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	d3dcontext->ClearDepthStencilView(this->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	d3dcontext->ClearRenderTargetView(*rt, this->GetBkgColor());
 
 }
@@ -217,5 +219,10 @@ void SwapChain::TurnZBufferOff()
 {
 	ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
 	d3dcontext->OMSetDepthStencilState(g_objStates.DepthNone(), 1);
+}
+
+void SwapChain::SaveDepth()
+{
+	g_objTextureMgr.Save(m_depthStencilBuffer, "C:\\LWM11.jpg");
 }
 

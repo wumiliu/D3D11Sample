@@ -36,12 +36,12 @@ bool Shader::Compile(const String& binaryShaderName, const char* pszName, Shader
 	if (type_ == VS)
 	{
 		entryPoint = "VS";
-		profile = "vs_4_0";
+		profile = "vs_5_0";
 	}
 	else if (type_ == PS)
 	{
 		entryPoint = "PS";
-		profile = "ps_4_0";
+		profile = "ps_5_0";
 	}
 	vector<string> defines;
 	Split(defines_, defines, ',');

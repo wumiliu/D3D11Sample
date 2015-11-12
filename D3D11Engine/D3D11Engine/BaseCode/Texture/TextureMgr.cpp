@@ -221,11 +221,11 @@ void TextureMgr::Save(ID3D11Texture2D* pBuffer, const char* filename)
 	desc.Height = static_cast<UINT>(nHeight);
 	desc.MipLevels = static_cast<UINT>(1);
 	desc.ArraySize = static_cast<UINT>(1);
-	desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.Format = pDest.Format;
 	desc.SampleDesc.Count = 1;
 	desc.SampleDesc.Quality = 0;
 	desc.Usage = D3D11_USAGE_STAGING;
-	//	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;;
+	//desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;;
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 	desc.MiscFlags = 0;
 
@@ -251,14 +251,33 @@ void TextureMgr::Save(ID3D11Texture2D* pBuffer, const char* filename)
 			int kk = FI_RGBA_RED;
 			for (uint32 x = 0; x < desc.Width; x++)
 			{
-				//Texture -> RGBA to ->BGRA
-				//Texture -> RGBA to ->BGRA
-				bits[0] = src[2]; //r -> 
-				bits[1] = src[1]; //a ->
-				bits[2] = src[0]; //g
-				bits[3] = src[3]; //b
-				bits += 4;
-				src += 4;
+				if (DXGI_FORMAT_D24_UNORM_S8_UINT == pDest.Format)
+				{
+					//其中深度值占24位,并映射到[0,1] 之间。模板值为8位,位于[0,255]中的整型
+					int fValue0 = src[0];
+					int fValue1 = src[1];
+					int fValue2 = src[2];
+					int fValue3 = src[3];
+					bits[0] = fValue0;
+					bits[1] = fValue0;
+					bits[2] = fValue0;
+					bits[3] = 255;
+					bits += 4;
+					src += 4;
+				}
+				else
+				{
+					//Texture -> RGBA to ->BGRA
+					//Texture -> RGBA to ->BGRA
+					float fValue = src[2];
+					bits[0] = src[2]; //r -> 
+					bits[1] = src[1]; //a ->
+					bits[2] = src[0]; //g
+					bits[3] = src[3]; //b
+					bits += 4;
+					src += 4;
+				}
+
 			}
 		}
 		FreeImage_Save(FIF_PNG, newDib, filename);

@@ -78,7 +78,7 @@ void D3D11RendererMaterial::PSSetConstantBuffers(const char* name, void* pBuffer
 	SetConstantBuffers(PS, name, pBuffer, nSize);
 }
 
-void D3D11RendererMaterial::Apply()
+void D3D11RendererMaterial::Apply(bool bTest)
 {
 	for (unsigned i = 0; i < MAX_SHADER_PARAMETER_GROUPS; ++i)
 	{
@@ -93,7 +93,15 @@ void D3D11RendererMaterial::Apply()
 	}
 
 	g_objDeviecManager.GetImmediateContext()->VSSetShader(vsShader.m_vertexShader, NULL, 0);
-	g_objDeviecManager.GetImmediateContext()->PSSetShader(psShader.m_pixelShader, NULL, 0);
+	if (bTest)
+	{
+		g_objDeviecManager.GetImmediateContext()->PSSetShader(NULL, NULL, 0);
+	}
+	else
+	{
+		g_objDeviecManager.GetImmediateContext()->PSSetShader(psShader.m_pixelShader, NULL, 0);
+	}
+
 
 }
 

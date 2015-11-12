@@ -7,16 +7,26 @@ D3D11App(hInstance)
 	mClientWidth = nWidth;
 	mClientHeight = nHeight;
 	pitch_ = yaw_ = 0.0f;
+	m_pTextureSampler = NULL;
+	m_pPointSampler = NULL;
+	m_pWriteStencilDSState = NULL;
+	m_pTestStencilDSState = NULL;
+
 }
 
 
 Sample::~Sample()
 {
+	SAFE_RELEASE(m_pTextureSampler);
+	SAFE_RELEASE(m_pPointSampler);
+	SAFE_RELEASE(m_pWriteStencilDSState);
+	SAFE_RELEASE(m_pTestStencilDSState);
 
 }
 
 void Sample::InitResource()
 {
+	DeviceCreated();
 	SkyBoxPtr = std::make_shared<SkyBox>();
 	SkyBoxPtr->InitResource();
 	gameObject.InitResource(GEOMETRY_TYPE_GRID);
@@ -121,4 +131,76 @@ void Sample::OnMouseMove(WPARAM btnState, int x, int y)
 		}
 	}
 	D3D11App::OnMouseMove(btnState, x, y);
+}
+
+HRESULT Sample::DeviceCreated()
+{
+	HRESULT hr;
+
+	// Create Depth Stencil State
+	{
+		D3D11_DEPTH_STENCIL_DESC dsDesc;
+		ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+
+		dsDesc.DepthEnable = false;
+		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+
+		dsDesc.StencilEnable = true;
+		dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+		dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+		dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_REPLACE;
+		dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_REPLACE;
+		dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		dsDesc.BackFace = dsDesc.FrontFace;
+		V_RETURN(m_d3dDevice->CreateDepthStencilState(&dsDesc, &m_pWriteStencilDSState));
+	}
+
+	{
+		D3D11_DEPTH_STENCIL_DESC dsDesc;
+		ZeroMemory(&dsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+
+		dsDesc.DepthEnable = false;
+		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+
+		dsDesc.StencilEnable = true;
+		dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+		dsDesc.StencilWriteMask = 0;
+		dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+		dsDesc.BackFace = dsDesc.FrontFace;
+		V_RETURN(m_d3dDevice->CreateDepthStencilState(&dsDesc, &m_pTestStencilDSState));
+	}
+
+
+	// Create Samplers
+	{
+		D3D11_SAMPLER_DESC sampDesc;
+		ZeroMemory(&sampDesc, sizeof(D3D11_SAMPLER_DESC));
+		sampDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+		sampDesc.AddressU = sampDesc.AddressV = sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.MaxAnisotropy = 16;
+		sampDesc.MinLOD = 0;
+		sampDesc.MaxLOD = FLT_MAX;
+		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		V_RETURN(m_d3dDevice->CreateSamplerState(&sampDesc, &m_pTextureSampler));
+	}
+
+	{
+		D3D11_SAMPLER_DESC sampDesc;
+		ZeroMemory(&sampDesc, sizeof(D3D11_SAMPLER_DESC));
+		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		sampDesc.AddressU = sampDesc.AddressV = sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.MaxAnisotropy = 0;
+		sampDesc.MinLOD = 0;
+		sampDesc.MaxLOD = FLT_MAX;
+		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		V_RETURN(m_d3dDevice->CreateSamplerState(&sampDesc, &m_pPointSampler));
+	}
+	return S_OK;
+
 }

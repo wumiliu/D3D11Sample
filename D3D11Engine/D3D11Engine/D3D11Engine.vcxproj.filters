@@ -144,6 +144,9 @@
     <ClCompile Include="Sample\RenderTargetSample.cpp">
       <Filter>Sample</Filter>
     </ClCompile>
+    <ClCompile Include="Sample\FXAASample.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -276,6 +279,9 @@
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Sample\RenderTargetSample.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\FXAASample.h">
       <Filter>Sample</Filter>
     </ClInclude>
   </ItemGroup>

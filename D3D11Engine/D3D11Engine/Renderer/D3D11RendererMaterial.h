@@ -27,7 +27,7 @@ public:
 
 	void PSSetShaderResources(TextureUnit texture, ID3D11ShaderResourceView* ppShaderResourceViews);
 
-	void Apply();
+	void Apply(bool bTest = false);
 	template< class VertexTypes >
 	ID3D11InputLayout* getLayout();
 protected:

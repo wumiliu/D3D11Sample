@@ -24,6 +24,7 @@ public:
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 protected:
 	virtual void InitResource();
+	HRESULT DeviceCreated();
 	void CreateScrene();
 	void RenderSample();
 	std::shared_ptr<class Scene> scene_; 
@@ -37,5 +38,9 @@ protected:
 	GameObject gameObject;
 	GameObject gameSphereObject;
 
+	ID3D11SamplerState*	m_pTextureSampler;
+	ID3D11SamplerState*	m_pPointSampler;
+	ID3D11DepthStencilState* m_pWriteStencilDSState;
+	ID3D11DepthStencilState* m_pTestStencilDSState;
 };
 
