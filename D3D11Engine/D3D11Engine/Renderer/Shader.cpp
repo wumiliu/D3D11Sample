@@ -78,6 +78,7 @@ bool Shader::Compile(const String& binaryShaderName, const char* pszName, Shader
 	{
 		printf("Error compiling shader.  Check shader-error.txt for message.\n");
 		printf("%s\n", (char*)(errorMsgs->GetBufferPointer()));
+		assert(false);
 		return false;
 	}
 	unsigned char* bufData = (unsigned char*)shaderCode->GetBufferPointer();
