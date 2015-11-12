@@ -56,10 +56,11 @@ void FXAASample::DrawScene()
 		pFXAAShader->VSSetConstantBuffers("RCPFrame", &vFxaa);
 		pFXAAShader->PSSetConstantBuffers("RCPFrame", &vFxaa);
 
-
 		pFXAAShader->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
 		pFXAAShader->Apply();
 		m_deviceContext->Draw(3, 0);
+		ShowRT();
+
 	}
 	else
 	{
@@ -69,7 +70,18 @@ void FXAASample::DrawScene()
 	
 }
 
-void FXAASample::RenderRT()
+void FXAASample::ShowRT()
 {
-
+	SwapChainPtr->TurnZBufferOff();
+	int x = (int)(mClientWidth * 0.66666f - 10);
+	int y = (int)(mClientHeight * 0.66666f - 10);
+	int width = mClientWidth - x;
+	int height = mClientHeight - y;
+	g_objSprite.ShowBlock(x, y, x + width, y + height, { 0.000000000f, 0.000000000f, 0.000000000f, 0.500000000f });
+	x = (int)(mClientWidth * 0.66666f - 5);
+	y = (int)(mClientHeight * 0.66666f - 5);
+	int w = mClientWidth - x - 5;
+	int h = mClientHeight - y - 5;
+	g_objSprite.ShowTexture(x, y, x + w, y + h, colorRT->GetSRView());
 }
+
