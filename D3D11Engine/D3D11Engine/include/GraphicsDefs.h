@@ -49,6 +49,7 @@ enum ShaderParameterGroup
 enum TextureUnit
 {
 	TU_DIFFUSE = 0,
+	TU_CUBE = 1,
 	MAX_TEXTURE_UNITS 
 };
 

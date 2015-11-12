@@ -20,5 +20,4 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	if (!theApp.Init())
 		return 0;
 	return theApp.Run();
-
 }

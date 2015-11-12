@@ -21,14 +21,11 @@ public:
 
 private:
 	ID3D11Texture2D* mTexture2D;
-	ID3D11RenderTargetView* mRTV;
 	ID3D11Texture2D* mTextureShader2D;
-
+	ID3D11RenderTargetView* mRTV;
 	ID3D11ShaderResourceView* mSRV;
 	D3D11_VIEWPORT mViewport;
-
 	ID3D11DepthStencilView* mDSV;
-
 	ID3D11RenderTargetView	*m_renderTargetView;		//渲染对象视图
 	ID3D11DepthStencilView	*m_depthStencilView;		//深度/模板视图
 };

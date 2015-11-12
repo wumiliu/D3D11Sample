@@ -33,6 +33,7 @@ void TextureMgr::Relesese()
 		if (pTexture)
 		{
 			//ID3D11ShaderResourceView* pTextureView = pTexture->GetShaderResourceView();
+			//SAFE_RELEASE(pTextureView)
 			//ReleaseCOM(pTextureView);
 			delete pTexture;
 			pTexture = NULL;

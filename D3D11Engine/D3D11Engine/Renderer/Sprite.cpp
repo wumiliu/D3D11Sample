@@ -153,7 +153,7 @@ void Sprite::ShowTexture(int x1, int y1, int x2, int y2, ID3D11ShaderResourceVie
 
 	XMMATRIX toTexSpace = GetShow2DMatrix(m_nWidth, m_nHeight);
 	toTexSpace = rTmp * toTexSpace;
-	DrawPrimitiveUP(PRIMITIVE_TRIANGLELIST, 6, vertices, toTexSpace, pTexture, SpriteType::COLOR_TEX);
+	DrawPrimitiveUP(PRIMITIVE_TRIANGLELIST, 6, vertices, toTexSpace, pTexture, spriteType);
 }
 
 void Sprite::CalcCircleDot(VertexPositionColorTexture vCenter, VertexPositionColorTexture& vDot, float nRadius, float fAlpha)
@@ -223,20 +223,22 @@ void Sprite::DrawPrimitiveUP(PrimitiveType PrimitiveType, unsigned int Primitive
 		m_deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
 		nMaterialPtr->VSSetConstantBuffers("worldMatrix", &model);
-		nMaterialPtr->PSSetConstantBuffers("SpriteType", &spriteType);
+		
 		if (pTexture)
 		{
 			nMaterialPtr->PSSetShaderResources(TU_DIFFUSE, pTexture);
 		}
-
+		else
+		{
+			spriteType = ONLY_COLOR;
+		}
+		nMaterialPtr->PSSetConstantBuffers("SpriteType", &spriteType);
 		nMaterialPtr->Apply();
 
 		ID3D11SamplerState* LinearWrap = g_objStates.LinearWrap();
 		FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
 		m_deviceContext->PSSetSamplers(0, 1, &LinearWrap);
-		m_deviceContext->RSSetState(g_objStates.CullCounterClockwise());
-
 		m_deviceContext->Draw(PrimitiveCount, 0);
 	}
 }

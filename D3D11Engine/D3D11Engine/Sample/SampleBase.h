@@ -12,3 +12,4 @@
 #include "Renderer/DeviceManager.h"
 #include "Renderer/GemoetryRender.h"
 #include "Renderer/Sprite.h"
+#include "Renderer/CommonStates.h"

@@ -43,7 +43,7 @@ PixelInputType VS(VertexInputType input)
 	return output;
 }
 
-Texture2D shaderTexture;
+Texture2D shaderTexture: register(t0);
 SamplerState SampleType: register(s0);
 float4 PS(PixelInputType input) : SV_TARGET
 {

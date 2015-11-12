@@ -4,6 +4,8 @@
 Sample::Sample(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/):
 D3D11App(hInstance)
 {
+	mClientWidth = nWidth;
+	mClientHeight = nHeight;
 	pitch_ = yaw_ = 0.0f;
 }
 
@@ -54,9 +56,8 @@ void Sample::UpdateScene(float fTotalTime, float fDeltaTime)
 		cameraNode_->Translate(Vector3::Right * MOVE_SPEED * dt);
 }
 
-void Sample::DrawScene()
+void Sample::RenderSample()
 {
-	SwapChainPtr->Begin();
 	SwapChainPtr->TurnZBufferOn();
 	Matrix mWorld;
 	Matrix mView;
@@ -70,10 +71,16 @@ void Sample::DrawScene()
 	gameObject.Render(Matrix::CreateScale(5, 5, 5), mView, mProj);
 	gameSphereObject.Render(Matrix::CreateScale(3, 3, 3), mView, mProj);
 
-	
+
 	Vector3 eyePos = cameraNode_->GetWorldPosition();
 	mWorld = Matrix::CreateTranslation(eyePos.x, eyePos.y, eyePos.z);
 	SkyBoxPtr->Render(mWorld*mView*mProj);
+}
+
+void Sample::DrawScene()
+{
+	SwapChainPtr->Begin();
+	RenderSample();
 	SwapChainPtr->Flip();
 }
 

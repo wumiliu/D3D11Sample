@@ -36,9 +36,9 @@ void SkyBox::Render(Matrix MVP, bool bTest)
 	ID3D11DeviceContext* pImmediateContext = g_objDeviecManager.GetImmediateContext();
 
 	m_MaterialPtr->VSSetConstantBuffers("MVP", &MVP);
-	m_MaterialPtr->PSSetShaderResources(TU_DIFFUSE, m_pSrv);
+	m_MaterialPtr->PSSetShaderResources(TU_CUBE, m_pSrv);
 	ID3D11SamplerState* LinearWrap = g_objStates.LinearWrap();
-	pImmediateContext->PSSetSamplers(TU_DIFFUSE, 1, &LinearWrap);
+	pImmediateContext->PSSetSamplers(TU_CUBE, 1, &LinearWrap);
 
 	m_MaterialPtr->Apply();
 

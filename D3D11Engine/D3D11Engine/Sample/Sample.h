@@ -25,6 +25,7 @@ public:
 protected:
 	virtual void InitResource();
 	void CreateScrene();
+	void RenderSample();
 	std::shared_ptr<class Scene> scene_; 
 	class HpNode* cameraNode_;
 	class Camera* cameraMain;

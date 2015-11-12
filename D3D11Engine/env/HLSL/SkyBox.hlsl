@@ -35,8 +35,8 @@ PixelInputType VS(VertexInputType input)
 }
 
 #define Sample2D(tex, uv) t##tex.Sample(s##tex, uv)
-TextureCube tDiffCubeMap : register(t0);
-SamplerState sDiffCubeMap : register(s0);
+TextureCube tDiffCubeMap : register(t1);
+SamplerState sDiffCubeMap : register(s1);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pixel Shader

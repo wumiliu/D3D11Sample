@@ -19,36 +19,82 @@ void LightSample::InitResource()
 
 void LightSample::DrawScene()
 {
-	SwapChainPtr->TurnZBufferOff();
+	Matrix mWorld;
+	Matrix mView;
+	Matrix mProj;
+	Camera* cameraMain = cameraNode_->GetComponent<Camera>(true);
+	if (cameraMain)
+	{
+		mView = cameraMain->GetView();
+		mProj = cameraMain->GetProjection();
+	}
 	SwapChainPtr->Begin();
-	g_objSprite.ShowTexture(20, 20, "Data\\Texture\\wall01.dds");
-	ID3D11ShaderResourceView* pSrv;
-	pSrv = SwapChainPtr->GetResourceView();
 
-	ID3D11RenderTargetView* pRTV0 = colorRT->GetRTView();
-	ID3D11RenderTargetView* renderTargets[1] = { pRTV0 };
-	m_deviceContext->OMSetRenderTargets(1, renderTargets, colorRT->GetDSView());
-	g_objSprite.ShowTexture(20, 20, "Data\\Texture\\wall01.dds");
-	g_objSprite.ShowRect(400, 400, 500, 500, { 0, 0, 1, 0 }, mTimer.TotalTime());
-	g_objSprite.DrawCircle(100, 100, 50, { 0, 1, 0, 1 });
-	g_objSprite.ShowTexture(0, 0, 100, 100, pSrv);
+	SwapChainPtr->TurnZBufferOn();
+	gameObject.Render(Matrix::CreateScale(5, 5, 5), mView, mProj);
+	gameSphereObject.Render(Matrix::CreateScale(3, 3, 3), mView, mProj);
+	RenderRT();
 
-	SwapChainPtr->Begin();
-	pSrv = colorRT->GetSRView();
-	g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, pSrv);
+	int x = (int)(mClientWidth * 0.66666f - 10);
+	int y = (int)(mClientHeight * 0.66666f - 10);
+	int width = mClientWidth + 10;
+	int height = mClientHeight + 10;
+	RECT rect;
+	rect.left = (int)(mClientWidth * 0.66666f - 5);
+	rect.right = mClientWidth - 5;
+	rect.top = (int)(mClientHeight * 0.66666f - 5);
+	rect.bottom = mClientHeight - 5;
+	float h = (float)(rect.bottom - rect.top);
+	float w = (float)(rect.right - rect.left);
+	Vector3 eyePos = cameraNode_->GetWorldPosition();
+	mWorld = Matrix::CreateTranslation(eyePos.x, eyePos.y, eyePos.z);
+	SkyBoxPtr->Render(mWorld*mView*mProj);
 
 
+	ShowRT();
 	SwapChainPtr->Flip();
 }
 
 void LightSample::RenderRT()
 {
-	ID3D11RenderTargetView* pRTV0 = colorRT->GetRTView();
-	ID3D11RenderTargetView* renderTargets[1] = { pRTV0 };
-	m_deviceContext->OMSetRenderTargets(1, renderTargets, colorRT->GetDSView());
 	colorRT->Begin();
+
+	Matrix mWorld;
+	Matrix mView;
+	Matrix mProj;
+	Camera* cameraMain = cameraNode_->GetComponent<Camera>(true);
+	if (cameraMain)
+	{
+		mView = cameraMain->GetView();
+		mProj = cameraMain->GetProjection();
+	}
+
+	Vector3 eyePos = cameraNode_->GetWorldPosition();
+	mWorld = Matrix::CreateTranslation(eyePos.x, eyePos.y, eyePos.z);
+	SkyBoxPtr->Render(mWorld*mView*mProj);
+
+	SwapChainPtr->TurnZBufferOff();
+	m_deviceContext->RSSetState(g_objStates.CullNone());
 	g_objSprite.ShowTexture(20, 20, "Data\\Texture\\wall01.dds");
 	g_objSprite.ShowRect(400, 400, 500, 500, { 0, 0, 1, 0 }, mTimer.TotalTime());
 	g_objSprite.DrawCircle(100, 100, 50, { 0, 1, 0, 1 });
+	g_objSprite.ShowBlock(556, 256, 656, 356, { 1, 0, 0, 0.5f }, mTimer.TotalTime());
 
+	colorRT->End();
+
+}
+
+void LightSample::ShowRT()
+{
+	SwapChainPtr->TurnZBufferOff();
+	int x = (int)(mClientWidth * 0.66666f - 10);
+	int y = (int)(mClientHeight * 0.66666f - 10);
+	int width = mClientWidth - x;
+	int height = mClientHeight - y;
+	g_objSprite.ShowBlock(x, y, x + width, y + height, { 0.000000000f, 0.000000000f, 0.000000000f, 0.500000000f });
+	x = (int)(mClientWidth * 0.66666f - 5);
+	y = (int)(mClientHeight * 0.66666f - 5);
+	int w = mClientWidth - x - 5;
+	int h = mClientHeight - y - 5;
+	g_objSprite.ShowTexture(x, y, x + w, y + h, colorRT->GetSRView());
 }

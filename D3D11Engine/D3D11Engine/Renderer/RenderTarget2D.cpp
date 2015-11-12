@@ -105,6 +105,8 @@ RenderTarget2D::~RenderTarget2D()
 	SAFE_RELEASE(mSRV);
 	SAFE_RELEASE(mTexture2D);
 	SAFE_RELEASE(mDSV);
+	SAFE_RELEASE(mTextureShader2D);
+
 }
 
 void RenderTarget2D::Save(const char* fileName)
@@ -120,21 +122,34 @@ void RenderTarget2D::Begin()
 
 	deviceContext->OMGetRenderTargets(1, &m_renderTargetView, &m_depthStencilView);
 	deviceContext->RSSetViewports(1, &mViewport);
-	deviceContext->OMSetRenderTargets(1, &mRTV, mDSV);
+	if (mDSV != NULL)
+	{
+		deviceContext->OMSetRenderTargets(1, &mRTV, mDSV);
+		deviceContext->ClearDepthStencilView(mDSV, D3D10_CLEAR_DEPTH, 1.0f, 0);
+	}
+	else
+	{
+		if (m_depthStencilView != NULL)
+		{
+			deviceContext->ClearDepthStencilView(m_depthStencilView, D3D10_CLEAR_DEPTH, 1.0f, 0);
+		}
+		deviceContext->OMSetRenderTargets(1, &mRTV, m_depthStencilView);
+	}
+
 	float color[4];
 	color[0] = 0.1921568627450980392156862745098f;
 	color[1] = 0.30196078431372549019607843137255f;
 	color[2] = 0.47450980392156862745098039215686f;
 	color[3] = 1.0f;
 
-	color[0] = 0.5f;
-	color[1] = 0.5f;
-	color[2] = 0.5f;
-	color[3] = 1.0f;
+	//	color[0] = 0.5f;
+	//	color[1] = 0.5f;
+	//	color[2] = 0.5f;
+	//	color[3] = 1.0f;
 	// Clear the back buffer.
 	deviceContext->ClearRenderTargetView(mRTV, color);
 	// Clear the depth buffer.
-	deviceContext->ClearDepthStencilView(mDSV, D3D10_CLEAR_DEPTH, 1.0f, 0);
+	
 }
 
 void RenderTarget2D::End()
@@ -147,6 +162,14 @@ void RenderTarget2D::SetBackBufferRenderTarget()
 	ID3D11DeviceContext* deviceContext = g_objDeviecManager.GetImmediateContext();
 	ID3D11RenderTargetView* NullRt[1] = { NULL };
 	deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+	if (m_renderTargetView)
+	{
+		m_renderTargetView->Release();
+	}
+	if (m_depthStencilView)
+	{
+		m_depthStencilView->Release();
+	}
 }
 
 ID3D11ShaderResourceView* RenderTarget2D::GetSRView()
