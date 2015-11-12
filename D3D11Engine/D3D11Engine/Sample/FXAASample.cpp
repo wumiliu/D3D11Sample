@@ -47,14 +47,14 @@ void FXAASample::DrawScene()
 	if (m_fxaaEnabled)
 	{
 		SwapChainPtr->Begin();
-		MaterialPtr pFXAAShader = g_objMaterial.GetShader("HLSL\\FXAA.hlsl");
+		MaterialPtr pFXAAShader = g_objMaterial.GetShader("HLSL\\FXAA2.hlsl");
 		m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		float frameWidth = (float)mClientWidth;
 		float frameHeight = (float)mClientHeight;
 		Vector4  vFxaa = Vector4(1.0f / frameWidth, 1.0f / frameHeight, 0.0f, 0.0f);
 
-		pFXAAShader->VSSetConstantBuffers("RCPFrame", &vFxaa);
-		pFXAAShader->PSSetConstantBuffers("RCPFrame", &vFxaa);
+		pFXAAShader->VSSetConstantBuffers("cGBufferInvSize", &vFxaa);
+		pFXAAShader->PSSetConstantBuffers("cGBufferInvSize", &vFxaa);
 
 		pFXAAShader->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
 		pFXAAShader->Apply();

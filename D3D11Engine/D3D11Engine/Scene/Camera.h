@@ -55,7 +55,7 @@ public:
 	const Frustum& GetFrustum();
 	const Matrix& GetProjection() const{ return getProjMatrix(); }
 
-	void DrawDebugGeometry(bool bShowClip = false, Vector4 color = { 1, 0, 0, 1 });
+	void DrawDebugGeometry(bool bShowClip = false, Vector4 color =Vector4::One);
 	void Pick(int x, int y);
 	DirectX::SimpleMath::Ray CalcPickingRay(int x, int y, Matrix W = Matrix::Identity);
 
