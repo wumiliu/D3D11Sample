@@ -3,7 +3,7 @@
 
 SAMPLE_CPP(LightSample)
 {
-
+	m_bLightCmaera = false;
 }
 
 LightSample::~LightSample()
@@ -14,7 +14,50 @@ LightSample::~LightSample()
 void LightSample::InitResource()
 {
 	Sample::InitResource();
+	 lightNode_ = scene_->CreateChild("Camera");
+	 lightNode_->SetPosition(Vector3(0.0f, 5.0f, 1.0f));
+	Quaternion q = Quaternion::CreateFromEulerAngles(0.0f, 0.0f, 0.0f);
+	cameraNode_->SetRotation(q);
+	float fieldOfView = (float)XM_PI / 4.0f;
+	float AspectHByW = (float)mClientWidth / (float)mClientHeight;
+	lightCamera = lightNode_->CreateComponent<Camera>();
+	lightCamera->ProjParams(fieldOfView, AspectHByW, 1.0f, 100.0f);
+
 	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM,true);
+}
+
+void LightSample::UpdateScene(float fTotalTime, float fDeltaTime)
+{
+	if (KEYDOWN(VK_SPACE))
+	{
+		bKeyDown = true;
+	}
+	else
+	{
+		if (bKeyDown)
+		{
+			m_bLightCmaera = !m_bLightCmaera;
+			bKeyDown = false;
+		}
+	}
+
+	if (m_bLightCmaera)
+	{
+		const float MOVE_SPEED = 20.0f;
+		float dt = fDeltaTime / 1000.0f;
+		if (::GetAsyncKeyState('W') & 0x8000)
+			lightNode_->Translate(Vector3::Backward * MOVE_SPEED * dt);
+		if (::GetAsyncKeyState('S') & 0x8000)
+			lightNode_->Translate(Vector3::Forward * MOVE_SPEED * dt);
+		if (::GetAsyncKeyState('A') & 0x8000)
+			lightNode_->Translate(Vector3::Left * MOVE_SPEED * dt);
+		if (::GetAsyncKeyState('D') & 0x8000)
+			lightNode_->Translate(Vector3::Right * MOVE_SPEED * dt);
+	}
+	else
+	{
+		Sample::UpdateScene(fTotalTime, fDeltaTime);
+	}
 }
 
 void LightSample::DrawScene()
@@ -33,6 +76,9 @@ void LightSample::DrawScene()
 	SwapChainPtr->TurnZBufferOn();
 	gameObject.Render(Matrix::CreateScale(5, 5, 5), mView, mProj);
 	gameSphereObject.Render(Matrix::CreateScale(3, 3, 3), mView, mProj);
+	m_deviceContext->RSSetState(g_objStates.CullNone());
+	lightCamera->DrawDebugGeometry(mView*mProj, true, { 1, 0, 0, 1 });
+
 
 	RenderRT();
 
@@ -71,6 +117,7 @@ void LightSample::RenderRT()
 	g_objSprite.ShowBlock(556, 256, 656, 356, { 1, 0, 0, 0.5f }, mTimer.TotalTime());
 	ID3D11ShaderResourceView* pSrv = SwapChainPtr->GetResourceView();
 	g_objSprite.ShowTexture(556, 256, 656, 356, pSrv);
+
 
 	colorRT->End();
 

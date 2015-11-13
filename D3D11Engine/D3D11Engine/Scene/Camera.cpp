@@ -2,8 +2,8 @@
 
 #include "HpNode.h"
 
-
-
+#include "Renderer/VertexTypes.h"
+#include "Renderer/Sprite.h"
 Camera::Camera() :
 mDirtyProj(true),
 mDirtyView(true),
@@ -259,5 +259,105 @@ DirectX::SimpleMath::Ray Camera::GetScreenRay(float x, float y) const
 	ret.direction.Normalize();
 	return ret;
 
+}
+
+void Camera::DrawDebugGeometry(Matrix VP, bool bShowClip /*= false*/, Vector4 color /*= Vector4::One*/)
+{
+	GetFrustum();
+	const Vector3* vertices = frustum_.vertices_;
+	//XMFLOAT4 color = { 1, 1, 1, 1 };
+	VertexPositionColorTexture posVertices[24] =
+	{
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+		{ vertices[1], color, XMFLOAT2(0, 1) },
+		{ vertices[1], color, XMFLOAT2(0, 1) },
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) },
+		{ vertices[7], color, XMFLOAT2(0, 1) },
+		{ vertices[7], color, XMFLOAT2(0, 1) },
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+		{ vertices[1], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) },
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+		{ vertices[7], color, XMFLOAT2(0, 1) },
+	};
+	Matrix mWorld;
+	color = { 1.0f, 0.0f, 0.0f, 0.1f };
+	VertexPositionColorTexture pVertices[36] =
+	{
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+		{ vertices[1], color, XMFLOAT2(0, 1) },
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+
+
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) },
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) },
+		{ vertices[7], color, XMFLOAT2(0, 1) },
+
+
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) },
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) },
+		{ vertices[7], color, XMFLOAT2(0, 1) },
+
+
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+		{ vertices[1], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+		{ vertices[0], color, XMFLOAT2(0, 1) },
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+		{ vertices[3], color, XMFLOAT2(0, 1) },
+		{ vertices[4], color, XMFLOAT2(0, 1) },
+		{ vertices[7], color, XMFLOAT2(0, 1) },
+
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[1], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[2], color, XMFLOAT2(0, 1) },
+		{ vertices[5], color, XMFLOAT2(0, 1) },
+		{ vertices[6], color, XMFLOAT2(0, 1) } };
+
+
+	Matrix WVP = VP;
+	g_objSprite.DrawPrimitiveUP(PRIMITIVE_LINELIST, 24, posVertices, WVP);
+	if (bShowClip)
+	{
+		g_objSprite.DrawPrimitiveUP(PRIMITIVE_TRIANGLELIST, 36, pVertices, WVP);
+	}
+
+	if (!_debug.GetInitState())
+	{
+		_debug.InitResource(GEOMETRY_TYPE_BOX);
+		_debug.SetTexture("Data\\Texture\\ice.dds");
+
+	}
+	_debug.Render(Matrix::Identity, Matrix::Identity, mInvViewMatrix*WVP);
 }
 

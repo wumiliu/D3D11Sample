@@ -3,7 +3,7 @@
 #include "HpD3D9Type.h"
 #include "Framework/Frustum.h"
 #include "Component.h"
-
+#include "Framework/GameObject.h"
 class Camera : public Component
 {
 	OBJECT(Camera);
@@ -55,7 +55,7 @@ public:
 	const Frustum& GetFrustum();
 	const Matrix& GetProjection() const{ return getProjMatrix(); }
 
-	void DrawDebugGeometry(bool bShowClip = false, Vector4 color =Vector4::One);
+	void DrawDebugGeometry(Matrix VP,bool bShowClip = false, Vector4 color = Vector4::One);
 	void Pick(int x, int y);
 	DirectX::SimpleMath::Ray CalcPickingRay(int x, int y, Matrix W = Matrix::Identity);
 
@@ -106,6 +106,7 @@ public:
 	/// Frustum dirty flag.
 	mutable bool frustumDirty_;
 	Frustum	frustum_;
+	GameObject _debug;
 	bool orthographic_;
 	float orthoSize_;
 	int mClientWidth;
