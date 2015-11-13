@@ -6,7 +6,16 @@
 
 #include "Sample/DeferredLighting.h"
 
-
+struct TestA
+{
+	float a;
+	float b;
+	TestA()
+	{
+		a = 10;
+		b = 11;
+	}
+};
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)
 {
 
@@ -16,9 +25,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	{
 		freopen_s(&f, "CONOUT$", "w", stdout);
 	}
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-
 	FXAASample theApp(hInstance, 1024, 600);
 	if (!theApp.Init())
 		return 0;

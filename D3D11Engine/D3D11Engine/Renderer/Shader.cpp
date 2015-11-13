@@ -50,18 +50,33 @@ bool Shader::Compile(const String& binaryShaderName, const char* pszName, Shader
 	flags |= D3DCOMPILE_DEBUG;
 	flags |= D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
+	std::vector<String> defineValues;
+	for (unsigned i = 0; i < defines.size(); ++i)
+	{
+		unsigned equalsPos = defines[i].find('=');
+		string strDefinition = "1";
+		if (equalsPos != string::npos)
+		{
+			string strName = defines[i].substr(0, equalsPos);
+			strDefinition = defines[i].substr(equalsPos + 1);
+			defines[i] = strName;
+		}
+		defineValues.push_back(strDefinition);
+	}
 	std::vector<D3D_SHADER_MACRO> macros;
 	for (unsigned i = 0; i < defines.size(); ++i)
 	{
 		D3D_SHADER_MACRO macro;
 		macro.Name = defines[i].c_str();
-		macro.Definition = "1";
+		macro.Definition = defineValues[i].c_str();
 		macros.push_back(macro);
 	}
+
 	D3D_SHADER_MACRO endMacro;
 	endMacro.Name = 0;
 	endMacro.Definition = 0;
 	macros.push_back(endMacro);
+
 	ID3DBlob* shaderCode = 0;
 	ID3DBlob* errorMsgs = 0;
 	HRESULT result =
