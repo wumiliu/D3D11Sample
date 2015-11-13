@@ -16,37 +16,43 @@ void FXAASample::InitResource()
 	Sample::InitResource();
 	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
 }
+void FXAASample::UpdateScene(float fTotalTime, float fDeltaTime)
+{
+	Sample::UpdateScene(fTotalTime, fDeltaTime);
+	if (KEYDOWN(VK_SPACE))
+	{
+		bKeyDown = true;
+	}
+	else
+	{
+		if (bKeyDown)
+		{
+			m_fxaaEnabled = !m_fxaaEnabled;
+			bKeyDown = false;
+		}
+	}
+}
+
 
 void FXAASample::DrawScene()
 {
 	SwapChainPtr->Begin();
 	ID3D11RenderTargetView* pRTV = SwapChainPtr->GetRenderTargetView();
 	ID3D11DepthStencilView* pDSV = SwapChainPtr->GetDepthStencilView();
-	if (m_fxaaEnabled)
-	{
-		pRTV = colorRT->GetRTView();
-	}
+	pRTV = colorRT->GetRTView();
 	float ClearColor[4] = { sqrt(0.25f), sqrt(0.25f), sqrt(0.5f), 0.0f };
 	m_deviceContext->ClearRenderTargetView(pRTV, ClearColor);
 	m_deviceContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH, 1.0, 0);
 	// Rebind to original back buffer and depth buffer
 	ID3D11RenderTargetView * pRTVs[2] = { pRTV, NULL };
-
-	if (m_fxaaEnabled)
-	{
-		pRTVs[0] = colorRT->GetRTView();
-	}
-
+	pRTVs[0] = colorRT->GetRTView();
 	m_deviceContext->OMSetRenderTargets(1, pRTVs, pDSV);
-
-
-
 	RenderSample();
 
+	SwapChainPtr->Begin();
 	// apply FXAA
 	if (m_fxaaEnabled)
 	{
-		SwapChainPtr->Begin();
 		MaterialPtr pFXAAShader = g_objMaterial.GetShader("HLSL\\FXAA.hlsl");
 		m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		float frameWidth = (float)mClientWidth;
@@ -59,13 +65,12 @@ void FXAASample::DrawScene()
 		pFXAAShader->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
 		pFXAAShader->Apply();
 		m_deviceContext->Draw(3, 0);
-		ShowRT();
-
 	}
 	else
 	{
-
+		g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, colorRT->GetSRView());
 	}
+	ShowRT();
 	SwapChainPtr->Flip();
 	
 }

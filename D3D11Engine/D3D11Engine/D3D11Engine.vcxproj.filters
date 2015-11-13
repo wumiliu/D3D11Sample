@@ -16,9 +16,6 @@
     <Filter Include="Math">
       <UniqueIdentifier>{e830be56-c4f7-47a6-b359-4fcc36d132a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{82a72c5a-cf3b-46bb-a0c6-2d005613b99c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework">
       <UniqueIdentifier>{e1696ea4-6ec0-45df-b5c6-f1eb5a9d04ae}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="BaseCode\Texture">
       <UniqueIdentifier>{95d0d71c-a8ff-4e51-9ad1-b33225cb5b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Scene">
+      <UniqueIdentifier>{82a72c5a-cf3b-46bb-a0c6-2d005613b99c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,22 +55,22 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Camera.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Component.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\HpNode.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Light.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Skeleton.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Frustum.cpp">
       <Filter>Framework</Filter>
@@ -168,22 +168,22 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Camera.h">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Component.h">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\HpNode.h">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Light.h">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene.h">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Skeleton.h">
-      <Filter>Scene</Filter>
+      <Filter>Renderer\Scene</Filter>
     </ClInclude>
     <ClInclude Include="include\object.h">
       <Filter>include</Filter>

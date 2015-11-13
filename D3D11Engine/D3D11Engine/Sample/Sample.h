@@ -12,6 +12,9 @@
 
 typedef std::shared_ptr<class RenderTarget2D> RenderTarget2DPtr;
 
+#define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
+#define KEYUP(vk_code)   ((GetAsyncKeyState(vk_code) & 0x8000) ? 0 : 1)
+
 class Sample :public D3D11App
 {
 public:
@@ -42,5 +45,6 @@ protected:
 	ID3D11SamplerState*	m_pPointSampler;
 	ID3D11DepthStencilState* m_pWriteStencilDSState;
 	ID3D11DepthStencilState* m_pTestStencilDSState;
+	bool bKeyDown;
 };
 

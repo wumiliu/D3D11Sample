@@ -6,6 +6,7 @@ class FXAASample : public Sample
 public:
 	SAMPLE_H(FXAASample);
 	~FXAASample();
+	virtual void UpdateScene(float fTotalTime, float fDeltaTime);
 	virtual void DrawScene();
 	void RenderRT();
 protected:

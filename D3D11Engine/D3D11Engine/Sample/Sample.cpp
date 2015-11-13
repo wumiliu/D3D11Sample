@@ -11,7 +11,7 @@ D3D11App(hInstance)
 	m_pPointSampler = NULL;
 	m_pWriteStencilDSState = NULL;
 	m_pTestStencilDSState = NULL;
-
+	bKeyDown = false;
 }
 
 
