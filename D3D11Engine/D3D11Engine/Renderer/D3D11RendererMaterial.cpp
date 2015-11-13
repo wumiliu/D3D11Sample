@@ -42,8 +42,8 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 
 	CommentOutFunction(vsSourceCode_, "void PS(");
 	CommentOutFunction(psSourceCode_, "void VS(");
-	vsShader.Compile(vsSourceCode_, strFileName, VS, "FXAA_HLSL_4=1,FXAA_HLSL_5=0");
-	psShader.Compile(psSourceCode_, strFileName, PS, "FXAA_HLSL_4=1,FXAA_HLSL_5=0");
+	vsShader.Compile(vsSourceCode_, strFileName, VS, desc.vsDefines);
+	psShader.Compile(psSourceCode_, strFileName, PS, desc.psDefines);
 
 }
 

@@ -8,8 +8,8 @@ struct RendererMaterialDesc
 	RendererMaterialDesc()
 	{
 		strHLSLPath = "";
-		vsDefines = "";
-		psDefines = "";
+		vsDefines = "FXAA_HLSL_4=1,FXAA_HLSL_5=0";
+		psDefines = "FXAA_HLSL_4=1,FXAA_HLSL_5=0";
 	}
 	std::string strHLSLPath;
 	std::string vsDefines;
