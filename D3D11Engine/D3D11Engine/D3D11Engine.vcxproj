@@ -88,6 +88,7 @@
     <ClCompile Include="Renderer\D3D11RendererMaterial.cpp" />
     <ClCompile Include="Renderer\DeviceManager.cpp" />
     <ClCompile Include="Renderer\GemoetryRender.cpp" />
+    <ClCompile Include="Renderer\GeometricPrimitive.cpp" />
     <ClCompile Include="Renderer\RenderTarget2D.cpp" />
     <ClCompile Include="Renderer\Shader.cpp" />
     <ClCompile Include="Renderer\Sprite.cpp" />
@@ -131,12 +132,14 @@
     <ClInclude Include="include\StringHash.h" />
     <ClInclude Include="Math\MathHelper.h" />
     <ClInclude Include="Math\SimpleMath.h" />
+    <ClInclude Include="Renderer\Bezier.h" />
     <ClInclude Include="Renderer\CommonStates.h" />
     <ClInclude Include="Renderer\ConstantBuffer.h" />
     <ClInclude Include="Renderer\D3D11Mesh.h" />
     <ClInclude Include="Renderer\D3D11RendererMaterial.h" />
     <ClInclude Include="Renderer\DeviceManager.h" />
     <ClInclude Include="Renderer\GemoetryRender.h" />
+    <ClInclude Include="Renderer\GeometricPrimitive.h" />
     <ClInclude Include="Renderer\RenderTarget2D.h" />
     <ClInclude Include="Renderer\Shader.h" />
     <ClInclude Include="Renderer\Sprite.h" />
@@ -159,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\SimpleMath.inl" />
+    <None Include="Renderer\TeapotData.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

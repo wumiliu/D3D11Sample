@@ -79,7 +79,7 @@ typedef int   int32;
 #define V_RETURN(x)    { hr = (x); if( FAILED(hr) ) { return hr; } }
 #endif
 
-
+typedef std::unique_ptr<class GeometricPrimitive> GeometricPrimitivePtr;
 typedef std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutVector;
 typedef std::string String;
 

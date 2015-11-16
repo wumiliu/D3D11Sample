@@ -50,4 +50,31 @@ namespace DirectX
 		static const D3D11_INPUT_ELEMENT_DESC InputElements[InputElementCount];
 	};
 
+	// Vertex struct holding position, normal vector, and texture mapping information.
+	struct VertexPositionNormalTexture
+	{
+		VertexPositionNormalTexture()
+		{ }
+
+		VertexPositionNormalTexture(XMFLOAT3 const& position, XMFLOAT3 const& normal, XMFLOAT2 const& textureCoordinate)
+			: position(position),
+			normal(normal),
+			textureCoordinate(textureCoordinate)
+		{ }
+
+		VertexPositionNormalTexture(FXMVECTOR position, FXMVECTOR normal, FXMVECTOR textureCoordinate)
+		{
+			XMStoreFloat3(&this->position, position);
+			XMStoreFloat3(&this->normal, normal);
+			XMStoreFloat2(&this->textureCoordinate, textureCoordinate);
+		}
+
+		XMFLOAT3 position;
+		XMFLOAT3 normal;
+		XMFLOAT2 textureCoordinate;
+
+		static const int InputElementCount = 3;
+		static const D3D11_INPUT_ELEMENT_DESC InputElements[InputElementCount];
+	};
+
 }

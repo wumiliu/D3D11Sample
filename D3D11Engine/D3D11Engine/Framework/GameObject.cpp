@@ -86,7 +86,7 @@ void GameObject::Render(Matrix world, Matrix view, Matrix proj, bool bTest)
 		//pImmediateContext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
 		//pImmediateContext->RSSetState(g_objStates.CullNone());
 		FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
-		//pImmediateContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
+		//pImmediateContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
 	}
 	m_MaterialPtr->Apply();
 	GemoetryRenderPtr->render(m_MaterialPtr.get());

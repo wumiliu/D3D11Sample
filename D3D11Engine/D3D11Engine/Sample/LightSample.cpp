@@ -1,6 +1,7 @@
 #include "LightSample.h"
 #include "SampleBase.h"
-
+#include "Renderer//GeometricPrimitive.h"
+#include "BaseCode/Texture/TextureMgr.h"
 SAMPLE_CPP(LightSample)
 {
 	m_bLightCmaera = false;
@@ -14,8 +15,11 @@ LightSample::~LightSample()
 void LightSample::InitResource()
 {
 	Sample::InitResource();
-	 lightNode_ = scene_->CreateChild("Camera");
-	 lightNode_->SetPosition(Vector3(0.0f, 5.0f, 1.0f));
+	
+	gameCubeObject.InitResource(GEOMETRY_TYPE_BOX);
+	gameCubeObject.SetTexture("Data\\Texture\\seafloor.dds");
+	lightNode_ = scene_->CreateChild("Camera");
+	lightNode_->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 	Quaternion q = Quaternion::CreateFromEulerAngles(0.0f, 0.0f, 0.0f);
 	cameraNode_->SetRotation(q);
 	float fieldOfView = (float)XM_PI / 4.0f;
@@ -23,7 +27,16 @@ void LightSample::InitResource()
 	lightCamera = lightNode_->CreateComponent<Camera>();
 	lightCamera->ProjParams(fieldOfView, AspectHByW, 1.0f, 100.0f);
 
-	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM,true);
+	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, true);
+	normalRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, true);
+	fxaaRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, true);
+
+	//m_pLightingShader = g_objMaterial.GetShader("HLSL\\GeometricPrimitive.hlsl");
+	m_pLightingShader = g_objMaterial.GetShader("HLSL\\LightSample\\LightSample.hlsl");
+	gameCubeObject.SetMaterial(m_pLightingShader);
+	m_pDeferredShader = g_objMaterial.GetShader("HLSL\\LightSample\\Deferred.hlsl");
+
+	TeapotPtr = GeometricPrimitive::CreateTeapot();
 }
 
 void LightSample::UpdateScene(float fTotalTime, float fDeltaTime)
@@ -62,6 +75,17 @@ void LightSample::UpdateScene(float fTotalTime, float fDeltaTime)
 
 void LightSample::DrawScene()
 {
+	if (m_bLightCmaera)
+	{
+		RenderDeferre();
+		return;
+	}
+	else
+	{
+		RenderBase();
+		return;
+	}
+
 	Matrix mWorld;
 	Matrix mView;
 	Matrix mProj;
@@ -74,10 +98,19 @@ void LightSample::DrawScene()
 	SwapChainPtr->Begin();
 
 	SwapChainPtr->TurnZBufferOn();
-	gameObject.Render(Matrix::CreateScale(5, 5, 5), mView, mProj);
-	gameSphereObject.Render(Matrix::CreateScale(3, 3, 3), mView, mProj);
-	m_deviceContext->RSSetState(g_objStates.CullNone());
-	lightCamera->DrawDebugGeometry(mView*mProj, true, { 1, 0, 0, 1 });
+	m_deviceContext->RSSetState(g_objStates.CullCounterClockwise());
+	Vector3 lightDirection = Vector3(0.0f, 0.0f, 1.0f);
+	m_pLightingShader->PSSetConstantBuffers("lightDirection", &lightDirection);
+	static float rotation = 0.0f;
+	rotation = (float)3.141592654f * 0.15f;
+
+	// Rotate the world matrix by the rotation value so that the cube will spin.
+	mWorld = Matrix::CreateRotationY(rotation);
+	mWorld *= Matrix::CreateScale(5.0f);
+	gameCubeObject.Render(mWorld, mView, mProj);
+	//gameObject.Render(Matrix::CreateScale(3, 3, 3), mView, mProj);
+
+	//lightCamera->DrawDebugGeometry(mView*mProj, true, { 1, 0, 0, 1 });
 
 
 	RenderRT();
@@ -85,7 +118,7 @@ void LightSample::DrawScene()
 	Vector3 eyePos = cameraNode_->GetWorldPosition();
 	mWorld = Matrix::CreateTranslation(eyePos.x, eyePos.y, eyePos.z);
 	SkyBoxPtr->Render(mWorld*mView*mProj);
-
+	
 
 	ShowRT();
 	SwapChainPtr->Flip();
@@ -98,27 +131,35 @@ void LightSample::RenderRT()
 	Matrix mWorld;
 	Matrix mView;
 	Matrix mProj;
-	Camera* cameraMain = cameraNode_->GetComponent<Camera>(true);
+	Camera* cameraMain = lightNode_->GetComponent<Camera>(true);
 	if (cameraMain)
 	{
 		mView = cameraMain->GetView();
 		mProj = cameraMain->GetProjection();
 	}
 
-	Vector3 eyePos = cameraNode_->GetWorldPosition();
+
+
+	Vector3 lightDirection = Vector3(0.0f, 0.0f, 1.0f);
+	m_pLightingShader->PSSetConstantBuffers("lightDirection", &lightDirection);
+	m_deviceContext->RSSetState(g_objStates.CullClockwise());
+	// Update the rotation variable each frame.
+	static float rotation = 0.0f;
+	rotation += (float)3.141592654f * 0.01f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+
+	// Rotate the world matrix by the rotation value so that the cube will spin.
+	mWorld = Matrix::CreateRotationY(rotation);
+
+	gameCubeObject.Render(mWorld, mView, mProj);
+
+
+	Vector3 eyePos = lightNode_->GetWorldPosition();
 	mWorld = Matrix::CreateTranslation(eyePos.x, eyePos.y, eyePos.z);
 	SkyBoxPtr->Render(mWorld*mView*mProj);
-
-	SwapChainPtr->TurnZBufferOff();
-	m_deviceContext->RSSetState(g_objStates.CullNone());
-	g_objSprite.ShowTexture(20, 20, "Data\\Texture\\wall01.dds");
-	g_objSprite.ShowRect(400, 400, 500, 500, { 0, 0, 1, 0 }, mTimer.TotalTime());
-	g_objSprite.DrawCircle(100, 100, 50, { 0, 1, 0, 1 });
-	g_objSprite.ShowBlock(556, 256, 656, 356, { 1, 0, 0, 0.5f }, mTimer.TotalTime());
-	ID3D11ShaderResourceView* pSrv = SwapChainPtr->GetResourceView();
-	g_objSprite.ShowTexture(556, 256, 656, 356, pSrv);
-
-
 	colorRT->End();
 
 }
@@ -136,4 +177,122 @@ void LightSample::ShowRT()
 	int w = mClientWidth - x - 5;
 	int h = mClientHeight - y - 5;
 	g_objSprite.ShowTexture(x, y, x + w, y + h, colorRT->GetSRView());
+}
+
+void LightSample::RenderDeferre()
+{
+	Matrix mWorld;
+	Matrix mView;
+	Matrix mProj;
+	Camera* cameraMain = cameraNode_->GetComponent<Camera>(true);
+	if (cameraMain)
+	{
+		mView = cameraMain->GetView();
+		mProj = cameraMain->GetProjection();
+	}
+	
+	SwapChainPtr->Begin();
+
+	ID3D11RenderTargetView* pRTV = SwapChainPtr->GetRenderTargetView();
+	ID3D11DepthStencilView*        pDSV = SwapChainPtr->GetDepthStencilView();
+	ID3D11RenderTargetView* pGBufRTV[] = { colorRT->GetRTView(), normalRT->GetRTView()};
+	float clearColor[4] = { 0.1921568627450980392156862745098f, 0.30196078431372549019607843137255f, 0.47450980392156862745098039215686f, 1.0f };
+
+
+	m_deviceContext->ClearRenderTargetView(pGBufRTV[0], clearColor);
+	m_deviceContext->ClearRenderTargetView(pGBufRTV[1], clearColor);
+
+	m_deviceContext->OMSetRenderTargets(2, pGBufRTV, pDSV);
+//	colorRT->Begin();
+	Vector3 lightDirection = Vector3(0.0f, 0.0f, 1.0f);
+	m_pLightingShader->PSSetConstantBuffers("lightDirection", &lightDirection);
+	m_deviceContext->RSSetState(g_objStates.CullNone());
+	// Update the rotation variable each frame.
+	static float rotation = 0.0f;
+	rotation = (float)3.141592654f * 0.15f;
+//	rotation += (float)3.141592654f * 0.01f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+	// Rotate the world matrix by the rotation value so that the cube will spin.
+	mWorld = Matrix::CreateRotationY(rotation);
+	mWorld *= Matrix::CreateScale(5.0f);
+	gameCubeObject.SetMaterial(m_pDeferredShader);
+	gameCubeObject.Render(mWorld, mView, mProj);
+
+	fxaaRT->Begin();
+//	ShowRT();
+
+	m_deviceContext->RSSetState(g_objStates.CullNone());
+	SwapChainPtr->TurnZBufferOff();
+	MaterialPtr pFXAAShader = g_objMaterial.GetShader("HLSL\\LightSample\\FillGBuffer.hlsl");
+	pFXAAShader->PSSetConstantBuffers("lightDirection", &lightDirection);
+	m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	pFXAAShader->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
+	pFXAAShader->PSSetShaderResources(TU_CUBE, normalRT->GetSRView());
+	pFXAAShader->Apply();
+	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+	m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
+	m_deviceContext->Draw(3, 0);
+	SwapChainPtr->TurnZBufferOn();
+	fxaaRT->End();
+	SwapChainPtr->Begin();
+	RenderFXAA();
+	SwapChainPtr->Flip();
+}
+
+void LightSample::RenderBase()
+{
+	Matrix mWorld;
+	Matrix mView;
+	Matrix mProj;
+	Camera* cameraMain = cameraNode_->GetComponent<Camera>(true);
+	if (cameraMain)
+	{
+		mView = cameraMain->GetView();
+		mProj = cameraMain->GetProjection();
+	}
+	SwapChainPtr->Begin();
+	//	colorRT->Begin();
+	Vector3 lightDirection = Vector3(0.0f, 0.0f, 1.0f);
+	m_pLightingShader->PSSetConstantBuffers("lightDirection", &lightDirection);
+	m_deviceContext->RSSetState(g_objStates.CullNone());
+	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+	m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
+
+	static float rotation = 0.0f;
+	rotation = (float)3.141592654f * 0.15f;
+	//	rotation += (float)3.141592654f * 0.01f;
+	if (rotation > 360.0f)
+	{
+		rotation -= 360.0f;
+	}
+	// Rotate the world matrix by the rotation value so that the cube will spin.
+	mWorld = Matrix::CreateRotationY(rotation);
+	mWorld *= Matrix::CreateScale(5.0f);
+	gameCubeObject.SetMaterial(m_pLightingShader);
+	gameCubeObject.Render(mWorld, mView, mProj);
+	SwapChainPtr->TurnZBufferOn();
+	SwapChainPtr->Flip();
+}
+
+void LightSample::RenderFXAA()
+{
+	MaterialPtr pFXAAShader = g_objMaterial.GetShader("HLSL\\FXAA.hlsl");
+	m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	float frameWidth = (float)mClientWidth;
+	float frameHeight = (float)mClientHeight;
+	Vector4  vFxaa = Vector4(1.0f / frameWidth, 1.0f / frameHeight, 0.0f, 0.0f);
+
+	pFXAAShader->VSSetConstantBuffers("RCPFrame", &vFxaa);
+	pFXAAShader->PSSetConstantBuffers("RCPFrame", &vFxaa);
+
+	pFXAAShader->PSSetShaderResources(TU_DIFFUSE, fxaaRT->GetSRView());
+	pFXAAShader->Apply();
+	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+	m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
+	m_deviceContext->Draw(3, 0);
+
+
 }

@@ -147,6 +147,9 @@
     <ClCompile Include="Sample\FXAASample.cpp">
       <Filter>Sample</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\GeometricPrimitive.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -284,10 +287,19 @@
     <ClInclude Include="Sample\FXAASample.h">
       <Filter>Sample</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\GeometricPrimitive.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Bezier.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\SimpleMath.inl">
       <Filter>Math</Filter>
+    </None>
+    <None Include="Renderer\TeapotData.inc">
+      <Filter>Renderer</Filter>
     </None>
   </ItemGroup>
 </Project>
