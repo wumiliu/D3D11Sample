@@ -236,6 +236,10 @@ void LightSample::RenderDeferre()
 	SwapChainPtr->TurnZBufferOn();
 	fxaaRT->End();
 	SwapChainPtr->Begin();
+	//如果不处理FXAA,效果和前向渲染一致
+	//g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, fxaaRT->GetSRView());
+
+	//抗锯齿
 	RenderFXAA();
 	SwapChainPtr->Flip();
 }
@@ -291,6 +295,5 @@ void LightSample::RenderFXAA()
 	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
 	m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
 	m_deviceContext->Draw(3, 0);
-
 
 }
