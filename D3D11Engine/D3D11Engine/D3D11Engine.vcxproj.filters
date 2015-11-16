@@ -150,6 +150,9 @@
     <ClCompile Include="Renderer\GeometricPrimitive.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Sample\MultipleLightsSamlpe.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="Renderer\Bezier.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\MultipleLightsSamlpe.h">
+      <Filter>Sample</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

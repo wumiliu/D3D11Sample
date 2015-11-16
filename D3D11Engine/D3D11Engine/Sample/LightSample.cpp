@@ -218,6 +218,8 @@ void LightSample::RenderDeferre()
 	// Rotate the world matrix by the rotation value so that the cube will spin.
 	mWorld = Matrix::CreateRotationY(rotation);
 	mWorld *= Matrix::CreateScale(5.0f);
+
+
 	gameCubeObject.SetMaterial(m_pDeferredShader);
 	gameCubeObject.Render(mWorld, mView, mProj);
 

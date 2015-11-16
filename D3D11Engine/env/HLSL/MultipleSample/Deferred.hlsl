@@ -5,6 +5,11 @@ cbuffer MatrixBuffer
 	matrix projectionMatrix;
 };
 
+cbuffer CamerBuffer
+{
+	float fNear;
+	float fFar;
+};
 struct VertexInputType
 {
 	float4 position : SV_Position;
@@ -17,6 +22,7 @@ struct PixelInputType
 {
 	float4 position : SV_POSITION;
 	float2 tex : TEXCOORD0;
+	float2 Depth : TEXCOORD1;
 	float3 normal : NORMAL;
 };
 
@@ -51,6 +57,9 @@ PixelInputType VS(VertexInputType input)
 	// Normalize the normal vector.
 	output.normal = normalize(output.normal);
 
+	output.Depth.x = output.position.z;
+	output.Depth.y = output.position.w;
+
 	return output;
 }
 
@@ -67,6 +76,7 @@ PixelOutputType PS(PixelInputType input) : SV_TARGET
 	// Invert the light direction for calculations.
 	//output the normal, in [0,1] space
 	output.normal.xyz = 0.5f * (input.normal + 1.0f);
-	output.normal.a = 1.0f;
+	//保存深度值
+	output.normal.a = input.Depth.y / fFar;
 	return output;
 }

@@ -97,6 +97,7 @@
     <ClCompile Include="Sample\DeferredLighting.cpp" />
     <ClCompile Include="Sample\FXAASample.cpp" />
     <ClCompile Include="Sample\LightSample.cpp" />
+    <ClCompile Include="Sample\MultipleLightsSamlpe.cpp" />
     <ClCompile Include="Sample\RenderTargetSample.cpp" />
     <ClCompile Include="Sample\Sample.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Sample\DeferredLighting.h" />
     <ClInclude Include="Sample\FXAASample.h" />
     <ClInclude Include="Sample\LightSample.h" />
+    <ClInclude Include="Sample\MultipleLightsSamlpe.h" />
     <ClInclude Include="Sample\RenderTargetSample.h" />
     <ClInclude Include="Sample\Sample.h" />
     <ClInclude Include="Sample\SampleBase.h" />

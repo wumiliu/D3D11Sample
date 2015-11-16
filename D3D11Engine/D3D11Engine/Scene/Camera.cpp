@@ -361,3 +361,19 @@ void Camera::DrawDebugGeometry(Matrix VP, bool bShowClip /*= false*/, Vector4 co
 	_debug.Render(Matrix::Identity, Matrix::Identity, mInvViewMatrix*WVP);
 }
 
+void Camera::GetFrustumSize(Vector3& fNear, Vector3& fFar) const
+{
+	fNear.z = mNearPlane;
+	fFar.z = mFarPlane;
+
+	float halfViewSize = tanf(mFOV / 2.0f);
+	Vector3 vNear, vFar;
+
+	fNear.y = fNear.z * halfViewSize;
+	fNear.x = fNear.y* mAspectRatio;
+
+	fFar.y = fFar.z * halfViewSize;
+	fFar.x = fFar.y* mAspectRatio;
+
+}
+

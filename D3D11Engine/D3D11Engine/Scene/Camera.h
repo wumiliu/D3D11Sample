@@ -64,7 +64,8 @@ public:
 
 	// Convert normalized screen coordinates (0.0 - 1.0) and depth to a world space point.
 	Vector3 ScreenToWorldPoint(const Vector3& screenPos) const;
-
+	/// Return frustum near and far sizes.
+	void GetFrustumSize(Vector3& near, Vector3& far) const;
 public:
 	// 沿各分量平移的三个函数   
 	void MoveAlongRightVec(float fUnits);   // 沿right向量移动   
