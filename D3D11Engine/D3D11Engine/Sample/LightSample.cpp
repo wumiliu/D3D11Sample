@@ -27,9 +27,9 @@ void LightSample::InitResource()
 	lightCamera = lightNode_->CreateComponent<Camera>();
 	lightCamera->ProjParams(fieldOfView, AspectHByW, 1.0f, 100.0f);
 
-	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, true);
-	normalRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, true);
-	fxaaRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32G32B32A32_FLOAT, true);
+	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
+	normalRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
+	fxaaRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, true);
 
 	//m_pLightingShader = g_objMaterial.GetShader("HLSL\\GeometricPrimitive.hlsl");
 	m_pLightingShader = g_objMaterial.GetShader("HLSL\\LightSample\\LightSample.hlsl");
@@ -197,15 +197,13 @@ void LightSample::RenderDeferre()
 	ID3D11DepthStencilView*        pDSV = SwapChainPtr->GetDepthStencilView();
 	ID3D11RenderTargetView* pGBufRTV[] = { colorRT->GetRTView(), normalRT->GetRTView()};
 	float clearColor[4] = { 0.1921568627450980392156862745098f, 0.30196078431372549019607843137255f, 0.47450980392156862745098039215686f, 1.0f };
-
-
+	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+	m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
 	m_deviceContext->ClearRenderTargetView(pGBufRTV[0], clearColor);
 	m_deviceContext->ClearRenderTargetView(pGBufRTV[1], clearColor);
-
 	m_deviceContext->OMSetRenderTargets(2, pGBufRTV, pDSV);
-//	colorRT->Begin();
+
 	Vector3 lightDirection = Vector3(0.0f, 0.0f, 1.0f);
-	m_pLightingShader->PSSetConstantBuffers("lightDirection", &lightDirection);
 	m_deviceContext->RSSetState(g_objStates.CullNone());
 	// Update the rotation variable each frame.
 	static float rotation = 0.0f;
@@ -215,6 +213,8 @@ void LightSample::RenderDeferre()
 	{
 		rotation -= 360.0f;
 	}
+
+
 	// Rotate the world matrix by the rotation value so that the cube will spin.
 	mWorld = Matrix::CreateRotationY(rotation);
 	mWorld *= Matrix::CreateScale(5.0f);
@@ -222,8 +222,6 @@ void LightSample::RenderDeferre()
 	gameCubeObject.Render(mWorld, mView, mProj);
 
 	fxaaRT->Begin();
-//	ShowRT();
-
 	m_deviceContext->RSSetState(g_objStates.CullNone());
 	SwapChainPtr->TurnZBufferOff();
 	MaterialPtr pFXAAShader = g_objMaterial.GetShader("HLSL\\LightSample\\FillGBuffer.hlsl");
@@ -232,7 +230,7 @@ void LightSample::RenderDeferre()
 	pFXAAShader->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
 	pFXAAShader->PSSetShaderResources(TU_CUBE, normalRT->GetSRView());
 	pFXAAShader->Apply();
-	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+	SwapChainPtr->TurnZBufferOn();
 	m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
 	m_deviceContext->Draw(3, 0);
 	SwapChainPtr->TurnZBufferOn();

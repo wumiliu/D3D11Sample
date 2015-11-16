@@ -36,8 +36,8 @@ float4 PS(PixelInputType input) : SV_TARGET
 	colors = colorTexture.Sample(SampleTypePoint, input.Tex);
 
 	// Sample the normals from the normal render texture using the point sampler at this texture coordinate location.
-	normals = normalTexture.Sample(SampleTypePoint1, input.Tex);
-
+	float4 normalData = normalTexture.Sample(SampleTypePoint1, input.Tex);
+	normals.xyz = 2.0f * normalData.xyz - 1.0f;
 	// Invert the light direction for calculations.
 	lightDir = -lightDirection;
 

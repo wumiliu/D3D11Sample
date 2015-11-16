@@ -1,7 +1,7 @@
 #include "D3D11RendererMaterial.h"
 #include "BaseCode/BaseFunc.h"
 #include "DeviceManager.h"
-
+#include "CommonStates.h"
 
 
 
@@ -112,6 +112,8 @@ void D3D11RendererMaterial::PSSetShaderResources(TextureUnit texture, ID3D11Shad
 	{
 		if (pShaderResourceViews)
 		{
+			ID3D11SamplerState* LinearWrap = g_objStates.LinearWrap();
+			g_objDeviecManager.GetImmediateContext()->PSSetSamplers(texture, 1, &LinearWrap);
 			g_objDeviecManager.GetImmediateContext()->PSSetShaderResources(texture, 1, &pShaderResourceViews);
 		}
 		else

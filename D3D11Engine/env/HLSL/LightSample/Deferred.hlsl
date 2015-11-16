@@ -65,6 +65,7 @@ PixelOutputType PS(PixelInputType input) : SV_TARGET
 	output.color = shaderTexture.Sample(SampleType, input.tex);
 
 	// Invert the light direction for calculations.
-	output.normal = float4(input.normal, 1.0f);
+	//output the normal, in [0,1] space
+	output.normal.xyz = 0.5f * (input.normal + 1.0f);
 	return output;
 }
