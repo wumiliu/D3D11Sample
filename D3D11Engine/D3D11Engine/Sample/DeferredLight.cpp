@@ -76,6 +76,8 @@ void DeferredLight::DrawScene()
 	m_deviceContext->OMSetRenderTargets(3, pGBufRTV, pDSV);
 
 	float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	float clearColor1[4] = { 0.1921568627450980392156862745098f, 0.30196078431372549019607843137255f, 0.47450980392156862745098039215686f, 1.0f };
+
 
 	m_deviceContext->ClearRenderTargetView(pGBufRTV[0], clearColor);
 	m_deviceContext->ClearRenderTargetView(pGBufRTV[1], clearColor);
@@ -198,7 +200,7 @@ void DeferredLight::DrawLights(float gameTime)
 	colors[7] = static_cast<XMVECTOR>(DirectX::Colors::SkyBlue);
 	colors[8] = static_cast<XMVECTOR>(DirectX::Colors::Red);
 	colors[9] = static_cast<XMVECTOR>(DirectX::Colors::ForestGreen);
-	colors[10] = static_cast<XMVECTOR>(DirectX::Colors::Yellow);
+	colors[10] = static_cast<XMVECTOR>(DirectX::Colors::White);
 	colors[11] = static_cast<XMVECTOR>(DirectX::Colors::Wheat);
 
 	float angle = (float)gameTime;
