@@ -171,16 +171,17 @@ void DeferredLight::RenderScene()
 	
 	gameSphereObject.SetMaterial(renderGBuffer);
 	gameSphereObject.SetTexture("");
+	Matrix rotate = Matrix::CreateRotationY(XM_PI / 3 * mTimer.TotalTime());
 	renderGBuffer->PSSetShaderResources(TU_DIFFUSE, g_objTextureMgr.CreateTexture("Data\\Texture\\wall01.dds"));
 	//renderGBuffer->PSSetShaderResources(TU_CUBE, g_objTextureMgr.CreateTexture("Data\\Texture\\null_specular.tga"));
 	//renderGBuffer->PSSetShaderResources(TU_NORMAL, g_objTextureMgr.CreateTexture("Data\\Texture\\null_normal.tga"));
-	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* Matrix::CreateTranslation(0, 10, 0), mView, mProj);
-	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* Matrix::CreateTranslation(20, 10, 0), mView, mProj);
+	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* rotate* Matrix::CreateTranslation(0, 10, 0), mView, mProj);
+	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* rotate*Matrix::CreateTranslation(20, 10, 0), mView, mProj);
 
-	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* Matrix::CreateTranslation(0, 10, 20), mView, mProj);
-	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* Matrix::CreateTranslation(0, 10, 40), mView, mProj);
-	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* Matrix::CreateTranslation(20, 10, 20), mView, mProj);
-	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* Matrix::CreateTranslation(20, 10, 40), mView, mProj);
+	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* rotate*Matrix::CreateTranslation(0, 10, 20), mView, mProj);
+	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)*rotate* Matrix::CreateTranslation(0, 10, 40), mView, mProj);
+	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* rotate*Matrix::CreateTranslation(20, 10, 20), mView, mProj);
+	gameSphereObject.Render(Matrix::CreateScale(10, 10, 10)* rotate*Matrix::CreateTranslation(20, 10, 40), mView, mProj);
 
 
 }
