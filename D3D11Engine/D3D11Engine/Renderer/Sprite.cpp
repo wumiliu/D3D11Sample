@@ -13,6 +13,7 @@ Sprite& Sprite::GetInstance()
 
 Sprite::Sprite(int initialBufferCapacity /*= 1024*/, int maxBufferSizePerPrimitive /*= 32768*/)
 {
+	m_bBlend = true;
 	m_strShaderPath = "HLSL\\Sprite.hlsl";
 	m_initialBufferCapacity = initialBufferCapacity;
 	m_maxBufferSizePerPrimitive = maxBufferSizePerPrimitive;
@@ -236,9 +237,16 @@ void Sprite::DrawPrimitiveUP(PrimitiveType PrimitiveType, unsigned int Primitive
 		nMaterialPtr->Apply();
 
 		ID3D11SamplerState* LinearWrap = g_objStates.LinearWrap();
-		FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-		m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
 		m_deviceContext->PSSetSamplers(0, 1, &LinearWrap);
+		FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		if (m_bBlend)
+		{
+			m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
+		}
+		else
+		{
+			m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
+		}
 		m_deviceContext->Draw(PrimitiveCount, 0);
 	}
 }

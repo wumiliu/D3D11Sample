@@ -19,6 +19,7 @@ public:
 	void Render(Matrix world, Matrix view, Matrix proj, Matrix lightViewMatrix,
 		Matrix lightProjectionMatrix, ID3D11ShaderResourceView* depthMapTexture);
 	void Render(Matrix world, Matrix view, Matrix proj, bool bTest = false);
+	void Render();
 	void SetMaterial(std::shared_ptr<class D3D11RendererMaterial> material);
 	void SetPosition(Vector3 pos){ m_Pos = pos; }
 	Vector3 GetPos(){ return m_Pos; }

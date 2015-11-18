@@ -29,6 +29,11 @@ void D3D11RendererMaterial::loadShaders(const RendererMaterialDesc& desc)
 	}
 	fseek(m_IFileRead, 0, SEEK_END);
 	int fileSize = ftell(m_IFileRead);
+	if (fileSize <= 0)
+	{
+		printf(" file is null%s\n", strFileName);
+		return;
+	}
 	unsigned char* sourceBuffer = new unsigned char[fileSize + 1];
 	memset(sourceBuffer, 0, fileSize + 1);
 	fseek(m_IFileRead, 0, SEEK_SET);

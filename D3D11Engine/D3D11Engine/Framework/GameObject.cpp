@@ -46,6 +46,8 @@ void GameObject::InitResource(GEOMETRY_TYPE type)
 	case GEOMETRY_TYPE_GRID:
 	{
 		GeoGen::CreateGrid(20.0f, 20.0f, 20, 20, meshData);
+		GeoGen::CreateGrid(20.0f, 20.0f, 1, 1, meshData);
+
 	}
 	break;
 	case GEOMETRY_TYPE_BOX_EX:
@@ -88,6 +90,12 @@ void GameObject::Render(Matrix world, Matrix view, Matrix proj, bool bTest)
 		FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
 		//pImmediateContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
 	}
+	m_MaterialPtr->Apply();
+	GemoetryRenderPtr->render(m_MaterialPtr.get());
+}
+
+void GameObject::Render()
+{
 	m_MaterialPtr->Apply();
 	GemoetryRenderPtr->render(m_MaterialPtr.get());
 }

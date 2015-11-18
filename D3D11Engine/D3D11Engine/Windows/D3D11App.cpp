@@ -52,6 +52,7 @@ bool D3D11App::Init()
 		return false;
 	InitResource();
 	mTimer.Start();
+	mTimer.Reset();
 	return true;
 }
 
@@ -265,7 +266,7 @@ int D3D11App::Run()
 					timeLoop = mTimer.GetTime();
 					timeLoop = timeGetTime();
 					CalculateFrameStats();
-					UpdateScene(mTimer.TotalTime()*1000.0f, mTimer.DeltaTime()*1000.0f);
+					UpdateScene(mTimer.TotalTime(), mTimer.DeltaTime()*1000.0f);
 					DrawScene();
 				}
 			}

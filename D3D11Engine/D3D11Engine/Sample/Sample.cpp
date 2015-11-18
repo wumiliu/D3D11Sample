@@ -56,14 +56,18 @@ void Sample::UpdateScene(float fTotalTime, float fDeltaTime)
 {
 	const float MOVE_SPEED = 20.0f;
 	float dt = fDeltaTime / 1000.0f;
-	if (::GetAsyncKeyState('W') & 0x8000)
-		cameraNode_->Translate(Vector3::Backward * MOVE_SPEED * dt);
-	if (::GetAsyncKeyState('S') & 0x8000)
-		cameraNode_->Translate(Vector3::Forward * MOVE_SPEED * dt);
-	if (::GetAsyncKeyState('A') & 0x8000)
-		cameraNode_->Translate(Vector3::Left * MOVE_SPEED * dt);
-	if (::GetAsyncKeyState('D') & 0x8000)
-		cameraNode_->Translate(Vector3::Right * MOVE_SPEED * dt);
+	if (::GetFocus())
+	{
+		if (::GetAsyncKeyState('W') & 0x8000)
+			cameraNode_->Translate(Vector3::Backward * MOVE_SPEED * dt);
+		if (::GetAsyncKeyState('S') & 0x8000)
+			cameraNode_->Translate(Vector3::Forward * MOVE_SPEED * dt);
+		if (::GetAsyncKeyState('A') & 0x8000)
+			cameraNode_->Translate(Vector3::Left * MOVE_SPEED * dt);
+		if (::GetAsyncKeyState('D') & 0x8000)
+			cameraNode_->Translate(Vector3::Right * MOVE_SPEED * dt);
+	}
+
 }
 
 void Sample::RenderSample()

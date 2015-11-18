@@ -22,7 +22,7 @@ struct VertexInputType
 
 struct PixelInputType
 {
-	float4 position : POSITION0;
+	float4 position : SV_POSITION;
 	float4 ScreenPosition : TEXCOORD0;
 	float3 oFarRay:TEXCOORD1;
 };
@@ -78,9 +78,8 @@ SamplerState SampleTypePoint1 : register(s1);
 
 cbuffer LightBuffer
 {
-	float3 lightDirection;
-	float padding;
 	float4 diffuseColor;
+	float4 lightPosition;
 };
 
 float4 PS(PixelInputType input) : SV_TARGET
@@ -90,17 +89,18 @@ float4 PS(PixelInputType input) : SV_TARGET
 
 	
 	// Sample the colors from the color render texture using the point sampler at this texture coordinate location.
-	colors = colorTexture.Sample(SampleTypePoint, input.ScreenPosition);
+	colors = colorTexture.Sample(SampleTypePoint, input.ScreenPosition.xy / input.ScreenPosition.w);
 	// Sample the normals from the normal render texture using the point sampler at this texture coordinate location.
-	float4 normalData = normalTexture.Sample(SampleTypePoint1, input.ScreenPosition);
+	float4 normalData = normalTexture.Sample(SampleTypePoint1, input.ScreenPosition.xy / input.ScreenPosition.w);
 	normals.xyz = 2.0f * normalData.xyz - 1.0f;
 	float depth = normalData.w;
 	float3 worldPos = input.oFarRay * depth / input.ScreenPosition.w;
 	float4 projWorldPos = float4(worldPos, 1.0);
-	float3 lightPos = lightDirection - projWorldPos.xyz;
+	float3 lightPos = lightPosition.xyz - projWorldPos.xyz;
 	lightPos = normalize(lightPos);
-	float lightIntensity1 = saturate(dot(normals, lightPos));
-	float color1 = diffuseColor* lightIntensity1;
+	float lightIntensity1 = saturate(dot(normals.xyz, lightPos));
+
+	float4 color1 = diffuseColor* lightIntensity1;
 	float4 color = saturate(color1) * colors;
 	return color;
 }

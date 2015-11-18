@@ -50,6 +50,8 @@ enum TextureUnit
 {
 	TU_DIFFUSE = 0,
 	TU_CUBE = 1,
+	TU_NORMAL = 2,
+
 	MAX_TEXTURE_UNITS 
 };
 

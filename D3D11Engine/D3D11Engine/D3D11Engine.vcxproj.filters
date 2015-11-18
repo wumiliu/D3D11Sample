@@ -153,6 +153,9 @@
     <ClCompile Include="Sample\MultipleLightsSamlpe.cpp">
       <Filter>Sample</Filter>
     </ClCompile>
+    <ClCompile Include="Sample\DeferredLight.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -297,6 +300,9 @@
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Sample\MultipleLightsSamlpe.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\DeferredLight.h">
       <Filter>Sample</Filter>
     </ClInclude>
   </ItemGroup>

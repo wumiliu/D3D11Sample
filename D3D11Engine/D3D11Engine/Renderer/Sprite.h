@@ -42,6 +42,7 @@ public:
 		VertexPositionColorTexture *pVertexs, Matrix model = XMMatrixIdentity(),
 		ID3D11ShaderResourceView*pTexture = NULL, SpriteType spriteType = COLOR_TEX);
 	void SetShader(const char* pszName){ m_strShaderPath = pszName; }
+	void SetAlphaBlend(bool bBlend = false){ m_bBlend = bBlend; }
 protected:
 	void CreateVertexBuffer(int nType, int nSize);
 	void CreateIndexBuffer(int nType, int nSize);
@@ -56,6 +57,7 @@ private:
 	int					m_nWidth;
 	int					m_nHeight;
 	std::string m_strShaderPath;
+	bool m_bBlend;
 };
 
 #define g_objSprite Sprite::GetInstance()

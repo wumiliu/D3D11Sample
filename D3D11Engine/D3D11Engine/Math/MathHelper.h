@@ -11,9 +11,14 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+
+const float PiOver2 = 1.5708f;
+const float PiOver4 = 0.785398f;
+const float TwoPi = 6.28319f;
 class MathHelper
 {
 public:
+
 	// Returns random float in [0, 1).
 	static float RandF()
 	{

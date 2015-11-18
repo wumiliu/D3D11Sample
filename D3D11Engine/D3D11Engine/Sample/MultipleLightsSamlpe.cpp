@@ -51,9 +51,9 @@ void MultipleLights::UpdateScene(float fTotalTime, float fDeltaTime)
 
 void MultipleLights::DrawScene()
 {
-	RenderTest();
+	RenderDeferred();
 	return;
-	RenderBase();
+	//RenderBase();
 }
 
 void MultipleLights::RenderBase()
@@ -122,6 +122,8 @@ void MultipleLights::RenderDeferred()
 	m_deviceContext->OMSetRenderTargets(2, pGBufRTV, pDSV);
 	float fFar = 1000.0f;
 	m_pDeferredShader->VSSetConstantBuffers("fFar", &fFar);
+	m_pDeferredShader->PSSetConstantBuffers("fFar", &fFar);
+
 
 	gameObject.SetMaterial(m_pDeferredShader);
 	gameObject.Render(Matrix::Identity, mView, mProj);
@@ -131,18 +133,51 @@ void MultipleLights::RenderDeferred()
 	m_pPoint->VSSetConstantBuffers("cCameraRot", &cCameraRot);
 	Vector4 cGBufferOffsets = { 0.5f, 0.5f, 0.5f, 0.5f };
 	m_pPoint->VSSetConstantBuffers("cGBufferOffsets", &cGBufferOffsets);
+	m_pPoint->PSSetConstantBuffers("lightDirection", &m_Light1.m_position);
+	m_pPoint->PSSetConstantBuffers("diffuseColor", &m_Light1.m_diffuseColor);
+
+
 
 	Vector3 nearVector, farVector;
 	cameraMain->GetFrustumSize(nearVector, farVector);
 	m_pPoint->VSSetConstantBuffers("cFrustumSize", &farVector);
-	gameObjectSphere.SetMaterial(m_MaterialMulitPoint);
+	m_pPoint->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
+	m_pPoint->PSSetShaderResources(TU_CUBE, normalRT->GetSRView());
+
+	gameObjectSphere.SetMaterial(m_pPoint);
 	mWorld = Matrix::CreateTranslation(-3.0f, 1.0f, 3.0f);
+	m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
+	SwapChainPtr->TurnZBufferOff();
+
+	g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, colorRT->GetSRView());
+	SwapChainPtr->TurnZBufferOff();
+
 	gameObjectSphere.Render(mWorld, mView, mProj);
+
+	mWorld = Matrix::CreateTranslation(m_Light2.m_position.x, m_Light2.m_position.y, m_Light2.m_position.z);
+	m_pPoint->PSSetConstantBuffers("lightDirection", &m_Light2.m_position);
+	m_pPoint->PSSetConstantBuffers("diffuseColor", &m_Light2.m_diffuseColor);
+	gameObjectSphere.Render(mWorld, mView, mProj);
+	
+
+	mWorld = Matrix::CreateTranslation(m_Light3.m_position.x, m_Light3.m_position.y, m_Light3.m_position.z);
+	m_pPoint->PSSetConstantBuffers("lightDirection", &m_Light3.m_position);
+	m_pPoint->PSSetConstantBuffers("diffuseColor", &m_Light3.m_diffuseColor);
+	gameObjectSphere.Render(mWorld, mView, mProj);
+
+
+	mWorld = Matrix::CreateTranslation(m_Light4.m_position.x, m_Light4.m_position.y, m_Light4.m_position.z);
+	m_pPoint->PSSetConstantBuffers("lightDirection", &m_Light4.m_position);
+	m_pPoint->PSSetConstantBuffers("diffuseColor", &m_Light4.m_diffuseColor);
+	gameObjectSphere.Render(mWorld, mView, mProj);
+
+
 	lightRT->End();
 
 	SwapChainPtr->Begin();
 	SwapChainPtr->TurnZBufferOff();
 	g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, lightRT->GetSRView());
+
 	SwapChainPtr->Flip();
 }
 
@@ -193,6 +228,7 @@ void MultipleLights::RenderTest()
 	gameObjectSphere.SetMaterial(m_MaterialMulitPoint);
 	mWorld = Matrix::CreateTranslation(-3.0f, 1.0f, 3.0f);
 	gameObjectSphere.Render(mWorld, mView, mProj);
+	
 	lightRT->End();
 
 

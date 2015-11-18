@@ -142,10 +142,10 @@ void RenderTarget2D::Begin()
 	color[2] = 0.47450980392156862745098039215686f;
 	color[3] = 1.0f;
 
-	//	color[0] = 0.5f;
-	//	color[1] = 0.5f;
-	//	color[2] = 0.5f;
-	//	color[3] = 1.0f;
+	color[0] = 0.0f;
+	color[1] = 0.0f;
+	color[2] = 0.0f;
+	color[3] = 0.0f;
 	// Clear the back buffer.
 	deviceContext->ClearRenderTargetView(mRTV, color);
 	// Clear the depth buffer.
