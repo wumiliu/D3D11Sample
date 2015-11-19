@@ -156,6 +156,9 @@
     <ClCompile Include="Sample\DeferredLight.cpp">
       <Filter>Sample</Filter>
     </ClCompile>
+    <ClCompile Include="Sample\DeferredLightSample.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -303,6 +306,9 @@
       <Filter>Sample</Filter>
     </ClInclude>
     <ClInclude Include="Sample\DeferredLight.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\DeferredLightSample.h">
       <Filter>Sample</Filter>
     </ClInclude>
   </ItemGroup>
