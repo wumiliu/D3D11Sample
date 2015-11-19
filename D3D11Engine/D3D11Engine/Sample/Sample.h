@@ -1,6 +1,7 @@
 #pragma once
 #include "Windows/D3D11App.h"
 #include "Framework/GameObject.h"
+#include "GraphicsDefs.h"
 
 #define SAMPLE_H(typeName) \
 	 public: \
@@ -26,6 +27,17 @@ public:
 	virtual void OnMouseUp(WPARAM btnState, int x, int y);
 	virtual void OnMouseMove(WPARAM btnState, int x, int y);
 protected:
+
+	void AlphaBlend();
+	void Opaque();
+	void TurnZBufferOn();
+	void TurnZBufferOff();
+	void SetState(CullMode cullMode_);
+private:
+	bool m_bBlend;
+	bool m_bTurnOn;
+	CullMode m_CullMode;
+protected:
 	virtual void InitResource();
 	HRESULT DeviceCreated();
 	void CreateScrene();
@@ -46,5 +58,7 @@ protected:
 	ID3D11DepthStencilState* m_pWriteStencilDSState;
 	ID3D11DepthStencilState* m_pTestStencilDSState;
 	bool bKeyDown;
+
+
 };
 

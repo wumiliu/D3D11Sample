@@ -59,7 +59,7 @@ void MultipleLights::DrawScene()
 void MultipleLights::RenderBase()
 {
 	SwapChainPtr->Begin();
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	Matrix mWorld;
 	Matrix mView;
 	Matrix mProj;
@@ -110,7 +110,7 @@ void MultipleLights::RenderDeferred()
 		mProj = cameraMain->GetProjection();
 	}
 	SwapChainPtr->Begin();
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	ID3D11RenderTargetView* pRTV = SwapChainPtr->GetRenderTargetView();
 	ID3D11DepthStencilView*        pDSV = SwapChainPtr->GetDepthStencilView();
 	ID3D11RenderTargetView* pGBufRTV[] = { colorRT->GetRTView(), normalRT->GetRTView() };
@@ -147,10 +147,10 @@ void MultipleLights::RenderDeferred()
 	gameObjectSphere.SetMaterial(m_pPoint);
 	mWorld = Matrix::CreateTranslation(-3.0f, 1.0f, 3.0f);
 	m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 
 	g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, colorRT->GetSRView());
-	SwapChainPtr->TurnZBufferOff();
+
 
 	gameObjectSphere.Render(mWorld, mView, mProj);
 
@@ -175,7 +175,7 @@ void MultipleLights::RenderDeferred()
 	lightRT->End();
 
 	SwapChainPtr->Begin();
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, lightRT->GetSRView());
 
 	SwapChainPtr->Flip();
@@ -184,7 +184,7 @@ void MultipleLights::RenderDeferred()
 void MultipleLights::RenderTest()
 {
 	SwapChainPtr->Begin();
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 
 	Vector4 diffuseColor[4];
 	Vector4 lightPosition[4];
@@ -233,7 +233,7 @@ void MultipleLights::RenderTest()
 
 
 	SwapChainPtr->Begin();
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	g_objSprite.ShowTexture(0, 0, mClientWidth, mClientHeight, lightRT->GetSRView());
 	SwapChainPtr->Flip();
 }

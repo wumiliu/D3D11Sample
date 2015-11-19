@@ -12,6 +12,10 @@ D3D11App(hInstance)
 	m_pWriteStencilDSState = NULL;
 	m_pTestStencilDSState = NULL;
 	bKeyDown = false;
+
+	m_bBlend = false;
+	m_bTurnOn = false;
+	m_CullMode = MAX_CULLMODES;
 }
 
 
@@ -72,7 +76,7 @@ void Sample::UpdateScene(float fTotalTime, float fDeltaTime)
 
 void Sample::RenderSample()
 {
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	Matrix mWorld;
 	Matrix mView;
 	Matrix mProj;
@@ -207,4 +211,70 @@ HRESULT Sample::DeviceCreated()
 	}
 	return S_OK;
 
+}
+
+void Sample::AlphaBlend()
+{
+	if (!m_bBlend)
+	{
+		m_bBlend = true;
+		FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+		m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
+	}
+}
+
+void Sample::Opaque()
+{
+	if (m_bBlend)
+	{
+		m_bBlend = false;
+		FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
+		m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
+	}
+}
+
+void Sample::TurnZBufferOn()
+{
+	if (!m_bTurnOn)
+	{
+		ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
+		d3dcontext->OMSetDepthStencilState(g_objStates.DepthDefault(), 1);
+		m_bTurnOn = true;
+	}
+}
+
+void Sample::TurnZBufferOff()
+{
+	if (m_bTurnOn)
+	{
+		ID3D11DeviceContext*  d3dcontext = g_objDeviecManager.GetImmediateContext();
+		d3dcontext->OMSetDepthStencilState(g_objStates.DepthNone(), 1);
+		m_bTurnOn = false;
+	}
+}
+
+void Sample::SetState(CullMode cullMode_)
+{
+	if (m_CullMode != cullMode_)
+	{
+		m_CullMode = cullMode_;
+		switch (cullMode_)
+		{
+		case  CULL_NONE:
+		{
+			m_deviceContext->RSSetState(g_objStates.CullNone());
+		}
+		break;
+		case  CULL_CCW:
+		{
+			m_deviceContext->RSSetState(g_objStates.CullCounterClockwise());
+		}
+		break;
+		case  CULL_CW:
+		{
+			m_deviceContext->RSSetState(g_objStates.CullClockwise());
+		}
+		break;
+		}
+	}
 }

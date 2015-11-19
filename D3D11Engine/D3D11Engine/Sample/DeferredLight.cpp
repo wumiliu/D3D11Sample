@@ -44,7 +44,7 @@ void DeferredLight::ClearGBuffer()
 	m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
 	m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	m_deviceContext->Draw(3, 0);
 
 }
@@ -99,7 +99,7 @@ void DeferredLight::DrawScene()
 	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
 	m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
 	m_deviceContext->RSSetState(g_objStates.CullCounterClockwise());
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	m_deviceContext->Draw(3, 0);
 
 	lightRTEx->End();
@@ -107,7 +107,7 @@ void DeferredLight::DrawScene()
 	SwapChainPtr->Begin();
 	int halfWidth = mClientWidth / 2;
 	int halfHeight = mClientHeight / 2;
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	g_objSprite.SetAlphaBlend(false);
 	g_objSprite.ShowTexture(0, 0, halfWidth, halfHeight, colorRT->GetSRView());
 	g_objSprite.ShowTexture(0, halfHeight, halfWidth, mClientHeight, normalRT->GetSRView());
@@ -149,7 +149,7 @@ void DeferredLight::RenderScene()
 		mView = cameraMain->GetView();
 		mProj = cameraMain->GetProjection();
 	}
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	m_deviceContext->RSSetState(g_objStates.CullCounterClockwise());
 	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
 	m_deviceContext->OMSetBlendState(g_objStates.Opaque(), BlendFactor, 0xFFFFFFFF);
@@ -208,11 +208,12 @@ void DeferredLight::DrawLights(float gameTime)
 	lightRT->Begin();
 	FLOAT BlendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };// 0xFFFFFFFF
 	m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
-	SwapChainPtr->TurnZBufferOff();//关闭深度
+	TurnZBufferOff();//关闭深度
 	Color lightColor = static_cast<XMVECTOR>(DirectX::Colors::SkyBlue);
 	DrawDirectionalLight(Vector3(0, -1, 1), lightColor);
 
 	int n = 15;
+	SetDefaultPoint();
 	for (int i = 0; i < n; i++)
 	{
 		Vector3 pos = Vector3((float)sinf(i * TwoPi / n + angle), 0.30f, (float)cosf(i * TwoPi / n + angle));
@@ -235,7 +236,7 @@ void DeferredLight::DrawLights(float gameTime)
 
 }
 
-void DeferredLight::DrawPointLight(Vector3 lightPosition, Color color, float lightRadius, float lightIntensity)
+void DeferredLight::SetDefaultPoint()
 {
 	Matrix mView;
 	Matrix mProj;
@@ -244,7 +245,6 @@ void DeferredLight::DrawPointLight(Vector3 lightPosition, Color color, float lig
 		mView = cameraMain->GetView();
 		mProj = cameraMain->GetProjection();
 	}
-
 	gameSphereObject.SetMaterial(pointLightEffect);
 	gameSphereObject.SetTexture("");
 
@@ -257,27 +257,31 @@ void DeferredLight::DrawPointLight(Vector3 lightPosition, Color color, float lig
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
 	m_deviceContext->PSSetSamplers(1, 1, &PointClamp);
 	m_deviceContext->PSSetSamplers(2, 1, &PointClamp);
+	pointLightEffect->VSSetConstantBuffers("View", &mView);
+	pointLightEffect->VSSetConstantBuffers("Projection", &mProj);
+	Vector3 pPos = cameraMain->GetNode()->GetWorldPosition();
+	pointLightEffect->PSSetConstantBuffers("cameraPosition", &pPos);
+	Matrix ViewProj = mView* mProj;
+	Matrix InvViewProj = ViewProj.Invert();
+	pointLightEffect->PSSetConstantBuffers("InvertViewProjection", &InvViewProj);
+}
 
+void DeferredLight::DrawPointLight(Vector3 lightPosition, Color color, float lightRadius, float lightIntensity)
+{
 	Matrix sphereWorldMatrix = Matrix::CreateScale(lightRadius) * Matrix::CreateTranslation(lightPosition);
 
 	pointLightEffect->VSSetConstantBuffers("World", &sphereWorldMatrix);
-	pointLightEffect->VSSetConstantBuffers("View", &mView);
-	pointLightEffect->VSSetConstantBuffers("Projection", &mProj);
+
 
 	pointLightEffect->PSSetConstantBuffers("lightPosition", &lightPosition);
 	pointLightEffect->PSSetConstantBuffers("Color", &color);
 	pointLightEffect->PSSetConstantBuffers("lightRadius", &lightRadius);
 	pointLightEffect->PSSetConstantBuffers("lightIntensity", &lightIntensity);
-	Vector3 pPos = cameraMain->GetNode()->GetWorldPosition();
-	pointLightEffect->PSSetConstantBuffers("cameraPosition", &pPos);
 
-	Matrix ViewProj = mView* mProj;
-	Matrix InvViewProj = ViewProj.Invert();
-	pointLightEffect->PSSetConstantBuffers("InvertViewProjection", &InvViewProj);
+
 
 	pointLightEffect->PSSetConstantBuffers("lightIntensity", &lightIntensity);
-	
-
+	Vector3 pPos = cameraMain->GetNode()->GetWorldPosition();
 	float cameraToCenter = Vector3::Distance(pPos, lightPosition);
 
 	if (cameraToCenter < lightRadius)

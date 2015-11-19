@@ -99,7 +99,7 @@ void DeferredLighting::Render()
 
 void DeferredLighting::ShowRT()
 {
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	int x = (int)(mClientWidth * 0.66666f - 10);
 	int y = (int)(mClientHeight * 0.66666f - 10);
 	int width = mClientWidth - x;

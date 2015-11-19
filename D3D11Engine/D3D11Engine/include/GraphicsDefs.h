@@ -1,5 +1,17 @@
 #pragma  once
 #include "StringHash.h"
+
+/// Culling mode.
+enum CullMode
+{
+	CULL_NONE = 0,
+	CULL_CCW,
+	CULL_CW,
+	MAX_CULLMODES
+};
+
+
+
 /// Vertex elements.
 enum VertexElement
 {

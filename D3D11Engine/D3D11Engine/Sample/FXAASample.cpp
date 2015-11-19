@@ -77,7 +77,7 @@ void FXAASample::DrawScene()
 
 void FXAASample::ShowRT()
 {
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	int x = (int)(mClientWidth * 0.66666f - 10);
 	int y = (int)(mClientHeight * 0.66666f - 10);
 	int width = mClientWidth - x;

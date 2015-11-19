@@ -97,7 +97,7 @@ void LightSample::DrawScene()
 	}
 	SwapChainPtr->Begin();
 
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	m_deviceContext->RSSetState(g_objStates.CullCounterClockwise());
 	Vector3 lightDirection = Vector3(0.0f, 0.0f, 1.0f);
 	m_pLightingShader->PSSetConstantBuffers("lightDirection", &lightDirection);
@@ -166,7 +166,7 @@ void LightSample::RenderRT()
 
 void LightSample::ShowRT()
 {
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	int x = (int)(mClientWidth * 0.66666f - 10);
 	int y = (int)(mClientHeight * 0.66666f - 10);
 	int width = mClientWidth - x;
@@ -225,17 +225,16 @@ void LightSample::RenderDeferre()
 
 	fxaaRT->Begin();
 	m_deviceContext->RSSetState(g_objStates.CullNone());
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	MaterialPtr pFXAAShader = g_objMaterial.GetShader("HLSL\\LightSample\\FillGBuffer.hlsl");
 	pFXAAShader->PSSetConstantBuffers("lightDirection", &lightDirection);
 	m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	pFXAAShader->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
 	pFXAAShader->PSSetShaderResources(TU_CUBE, normalRT->GetSRView());
 	pFXAAShader->Apply();
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	m_deviceContext->OMSetBlendState(g_objStates.AlphaBlend(), BlendFactor, 0xFFFFFFFF);
 	m_deviceContext->Draw(3, 0);
-	SwapChainPtr->TurnZBufferOn();
 	fxaaRT->End();
 	SwapChainPtr->Begin();
 	//如果不处理FXAA,效果和前向渲染一致
@@ -277,7 +276,7 @@ void LightSample::RenderBase()
 	mWorld *= Matrix::CreateScale(5.0f);
 	gameCubeObject.SetMaterial(m_pLightingShader);
 	gameCubeObject.Render(mWorld, mView, mProj);
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	SwapChainPtr->Flip();
 }
 

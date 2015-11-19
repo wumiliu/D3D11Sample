@@ -31,7 +31,7 @@ void RenderTargetSample::DrawScene()
 	}
 	SwapChainPtr->Begin();
 
-	SwapChainPtr->TurnZBufferOn();
+	TurnZBufferOn();
 	gameObject.Render(Matrix::CreateScale(5, 5, 5), mView, mProj);
 	gameSphereObject.Render(Matrix::CreateScale(3, 3, 3), mView, mProj);
 	RenderRT();
@@ -62,7 +62,7 @@ void RenderTargetSample::RenderRT()
 	mWorld = Matrix::CreateTranslation(eyePos.x, eyePos.y, eyePos.z);
 	SkyBoxPtr->Render(mWorld*mView*mProj);
 	// 绘制2D的时候，关闭深度缓冲.天空盒优先于2d 绘制
-	SwapChainPtr->TurnZBufferOff();
+	TurnZBufferOff();
 	m_deviceContext->RSSetState(g_objStates.CullNone());
 	g_objSprite.ShowTexture(20, 20, "Data\\Texture\\wall01.dds");
 	g_objSprite.ShowRect(400, 400, 500, 500, { 0, 0, 1, 0 }, mTimer.TotalTime());
@@ -79,7 +79,7 @@ void RenderTargetSample::RenderRT()
 
 void RenderTargetSample::ShowRT()
 {
-	SwapChainPtr->TurnZBufferOff();//绘制2D的时候，关闭深度缓冲
+	TurnZBufferOff();//绘制2D的时候，关闭深度缓冲
 	
 
 

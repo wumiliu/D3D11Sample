@@ -18,6 +18,7 @@ public:
 	void RenderScene();
 	void DrawLights(float gameTime);
 	void DrawPointLight(Vector3 lightPosition, Color color, float lightRadius, float lightIntensity);
+	void SetDefaultPoint();
 	void DrawDirectionalLight(Vector3 lightDirection, Color color);
 protected:
 	virtual void InitResource();
