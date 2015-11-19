@@ -74,6 +74,5 @@ void ConstantBuffer::Apply()
 	else if (Type == PS)
 	{
 		g_objDeviecManager.GetImmediateContext()->PSSetConstantBuffers(StartSlot, 1, &pConstantBuffer);
-
 	}
 }

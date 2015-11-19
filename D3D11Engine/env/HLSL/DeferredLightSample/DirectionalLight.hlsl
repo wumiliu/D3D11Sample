@@ -1,22 +1,23 @@
 
-cbuffer  MatrixBuffer: register(b1)
+cbuffer  MatrixBuffer: register(b0)
 {
-	float3 cameraPosition;
 	float3 lightDirection;
-	float3 Color;
-	matrix InvertViewProjection;
 };
 
+#include "Uniforms.hlsl"
+#include "ScreenPos.hlsl"
 
 struct FxaaVS_Output {
 	float4 Pos : SV_POSITION;
 	float2 Tex : TEXCOORD0;
+	float3 iFarRay:TEXCOORD1;
 };
 
 FxaaVS_Output VS(uint id : SV_VertexID) {
 	FxaaVS_Output Output;
 	Output.Tex = float2((id << 1) & 2, id & 2);
 	Output.Pos = float4(Output.Tex * float2(2.0f, -2.0f) + float2(-1.0f, 1.0f), 0.0f, 1.0f);
+	Output.iFarRay = GetFarRay(Output.Pos);
 	return Output;
 }
 
@@ -38,6 +39,8 @@ float4 PS(FxaaVS_Output input) : SV_TARGET{
 	float specularPower = normalData.a * 255.0f;
 	float specularIntensity = colorMap.Sample(SampleType, input.Tex).a;
 	float depthVal = depthMap.Sample(SampleType1, input.Tex).r;
+	float depthVal1 = depthMap.Sample(SampleType1, input.Tex).g;
+
 
 	float4 position;
 	position.x = input.Tex.x * 2.0f - 1.0f;
@@ -46,8 +49,10 @@ float4 PS(FxaaVS_Output input) : SV_TARGET{
 	position.w = 1.0f;
 	//transform to world space
 	position = mul(position, InvertViewProjection);
-	position /= position.w;
+	position = position.w;
 
+	float3 worldPos = input.iFarRay * depthVal1 + cCameraPosPS;
+	position.xyz = worldPos;
 	float3 lightVector = -normalize(lightDirection);
 
 		//compute diffuse light
@@ -57,7 +62,7 @@ float4 PS(FxaaVS_Output input) : SV_TARGET{
 		//reflexion vector
 	float3 reflectionVector = normalize(reflect(-lightVector, normal));
 		//camera-to-surface vector
-	float3 directionToCamera = normalize(cameraPosition - position);
+	float3 directionToCamera = normalize(cCameraPosPS - position);
 		//compute specular light
 	float specularLight = specularIntensity * pow(saturate(dot(reflectionVector, directionToCamera)), specularPower);
 	//output the two lights

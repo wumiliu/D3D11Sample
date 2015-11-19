@@ -1,10 +1,4 @@
 
-cbuffer CameraVS : register(b3)
-{
-	float3 cCameraPos;
-	float3 cFrustumSize;
-	matrix cCameraRot;
-}
 
 float4 GetScreenPos(float4 clipPos)
 {

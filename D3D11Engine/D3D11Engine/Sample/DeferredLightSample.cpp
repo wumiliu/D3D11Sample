@@ -239,13 +239,6 @@ void DeferredLightSample::DrawLights(float gameTime)
 
 void DeferredLightSample::SetDefaultPoint()
 {
-	Matrix mView;
-	Matrix mProj;
-	if (cameraMain)
-	{
-		mView = cameraMain->GetView();
-		mProj = cameraMain->GetProjection();
-	}
 	gameSphereObject.SetMaterial(pointLightEffect);
 	gameSphereObject.SetTexture("");
 
@@ -258,10 +251,18 @@ void DeferredLightSample::SetDefaultPoint()
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
 	m_deviceContext->PSSetSamplers(1, 1, &PointClamp);
 	m_deviceContext->PSSetSamplers(2, 1, &PointClamp);
+
+	Matrix mView;
+	Matrix mProj;
+	if (cameraMain)
+	{
+		mView = cameraMain->GetView();
+		mProj = cameraMain->GetProjection();
+	}
 	pointLightEffect->VSSetConstantBuffers("View", &mView);
 	pointLightEffect->VSSetConstantBuffers("Projection", &mProj);
 	Vector3 pPos = cameraMain->GetNode()->GetWorldPosition();
-	pointLightEffect->PSSetConstantBuffers("cameraPosition", &pPos);
+	pointLightEffect->PSSetConstantBuffers("cCameraPosPS", &pPos);
 	Matrix ViewProj = mView* mProj;
 	Matrix InvViewProj = ViewProj.Invert();
 	pointLightEffect->PSSetConstantBuffers("InvertViewProjection", &InvViewProj);
@@ -279,18 +280,12 @@ void DeferredLightSample::SetDefaultPoint()
 void DeferredLightSample::DrawPointLight(Vector3 lightPosition, Color color, float lightRadius, float lightIntensity)
 {
 	Matrix sphereWorldMatrix = Matrix::CreateScale(lightRadius) * Matrix::CreateTranslation(lightPosition);
-
 	pointLightEffect->VSSetConstantBuffers("World", &sphereWorldMatrix);
-
-
 	pointLightEffect->PSSetConstantBuffers("lightPosition", &lightPosition);
 	pointLightEffect->PSSetConstantBuffers("Color", &color);
 	pointLightEffect->PSSetConstantBuffers("lightRadius", &lightRadius);
 	pointLightEffect->PSSetConstantBuffers("lightIntensity", &lightIntensity);
 
-
-
-	pointLightEffect->PSSetConstantBuffers("lightIntensity", &lightIntensity);
 	Vector3 pPos = cameraMain->GetNode()->GetWorldPosition();
 	float cameraToCenter = Vector3::Distance(pPos, lightPosition);
 
@@ -319,13 +314,6 @@ void DeferredLightSample::DrawDirectionalLight(Vector3 lightDirection, Color col
 	m_deviceContext->PSSetSamplers(2, 1, &PointClamp);
 
 
-
-	directionalLightEffect->PSSetConstantBuffers("lightDirection", &lightDirection);
-	directionalLightEffect->PSSetConstantBuffers("Color", &color);
-
-	Vector3 pPos = cameraMain->GetNode()->GetWorldPosition();
-	directionalLightEffect->PSSetConstantBuffers("cameraPosition", &pPos);
-
 	Matrix mView;
 	Matrix mProj;
 	if (cameraMain)
@@ -333,10 +321,25 @@ void DeferredLightSample::DrawDirectionalLight(Vector3 lightDirection, Color col
 		mView = cameraMain->GetView();
 		mProj = cameraMain->GetProjection();
 	}
+	directionalLightEffect->VSSetConstantBuffers("View", &mView);
+	directionalLightEffect->VSSetConstantBuffers("Projection", &mProj);
+	
+	Quaternion q = cameraMain->GetNode()->GetWorldRotation();
+	Matrix cCameraRot = Matrix::CreateFromQuaternion(q);
+	Vector3 nearVector, farVector;
+	cameraMain->GetFrustumSize(nearVector, farVector);
+	directionalLightEffect->VSSetConstantBuffers("cFrustumSize", &farVector);
+	directionalLightEffect->VSSetConstantBuffers("cCameraRot", &cCameraRot);
 
+
+	Vector3 pPos = cameraMain->GetNode()->GetWorldPosition();
+	directionalLightEffect->PSSetConstantBuffers("cCameraPosPS", &pPos);
 	Matrix ViewProj = mView* mProj;
 	Matrix InvViewProj = ViewProj.Invert();
 	directionalLightEffect->PSSetConstantBuffers("InvertViewProjection", &InvViewProj);
+	directionalLightEffect->PSSetConstantBuffers("lightDirection", &lightDirection);
+	directionalLightEffect->PSSetConstantBuffers("Color", &color);
+
 	directionalLightEffect->Apply();
 	m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_deviceContext->Draw(3, 0);

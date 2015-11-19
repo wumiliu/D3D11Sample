@@ -1,20 +1,5 @@
-#include "base.hlsl"
-
-cbuffer  MatrixBuffer: register(b0)
-{
-	matrix World;
-	matrix View;
-	matrix Projection;
-};
-
-cbuffer  MatrixBuffer: register(b1)
-{
-	float3 cameraPosition;
-	float3 lightPosition;
-	float3 Color;
-	float lightRadius;
-	matrix InvertViewProjection;
-};
+#include "Uniforms.hlsl"
+#include "ScreenPos.hlsl"
 
 struct VertexShaderInput
 {
@@ -75,7 +60,7 @@ float4 PS(VertexShaderOutput input) : SV_TARGET
 	position = mul(position, InvertViewProjection);
 	position /= position.w;
 
-	float3 worldPos = input.iFarRay * depthVal1 + cameraPosition;
+	float3 worldPos = input.iFarRay * depthVal1 + cCameraPosPS;
 		//if (worldPos.x < position.x)
 	{
 		position.xyz = worldPos;
@@ -97,7 +82,7 @@ float4 PS(VertexShaderOutput input) : SV_TARGET
 		//reflection vector
 		float3 reflectionVector = normalize(reflect(-lightVector, normal));
 		//camera-to-surface vector
-		float3 directionToCamera = normalize(cameraPosition - position);
+		float3 directionToCamera = normalize(cCameraPosPS - position);
 		//compute specular light
 		float specularLight = specularIntensity * pow(saturate(dot(reflectionVector, directionToCamera)), specularPower);
 
