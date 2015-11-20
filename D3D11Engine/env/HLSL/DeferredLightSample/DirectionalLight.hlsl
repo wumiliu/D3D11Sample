@@ -1,9 +1,4 @@
 
-cbuffer  MatrixBuffer: register(b0)
-{
-	float3 lightDirection;
-};
-
 #include "Uniforms.hlsl"
 #include "ScreenPos.hlsl"
 
@@ -39,20 +34,9 @@ float4 PS(FxaaVS_Output input) : SV_TARGET{
 	float specularPower = normalData.a * 255.0f;
 	float specularIntensity = colorMap.Sample(SampleType, input.Tex).a;
 	float depthVal = depthMap.Sample(SampleType1, input.Tex).r;
-	float depthVal1 = depthMap.Sample(SampleType1, input.Tex).g;
 
+	float3 position = input.iFarRay * depthVal + cCameraPosPS;
 
-	float4 position;
-	position.x = input.Tex.x * 2.0f - 1.0f;
-	position.y = -(input.Tex.x * 2.0f - 1.0f);
-	position.z = depthVal;
-	position.w = 1.0f;
-	//transform to world space
-	position = mul(position, InvertViewProjection);
-	position = position.w;
-
-	float3 worldPos = input.iFarRay * depthVal1 + cCameraPosPS;
-	position.xyz = worldPos;
 	float3 lightVector = -normalize(lightDirection);
 
 		//compute diffuse light

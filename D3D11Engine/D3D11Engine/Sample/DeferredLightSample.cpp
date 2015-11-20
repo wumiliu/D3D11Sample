@@ -21,17 +21,17 @@ void DeferredLightSample::InitResource()
 	pitch_ = 30.0f;
 	Quaternion q = Quaternion::CreateFromEulerAngles(pitch_, 0.0f, 0.0f);
 	cameraNode_->SetRotation(q);
-	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, true);
+	colorRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
 	normalRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
-	depthRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32G32_FLOAT);
+	depthRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R32_FLOAT);
 	lightRT = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
 	lightRTEx = std::make_shared<RenderTarget2D>(mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM);
 
 
 	clearBufferEffect = g_objMaterial.GetShader("HLSL\\DeferredLightSample\\ClearGBuffer.hlsl");
-	renderGBuffer = g_objMaterial.GetShader("HLSL\\DeferredLightSample\\RenderGBufferEX.hlsl");
+	renderGBuffer = g_objMaterial.GetShader("HLSL\\DeferredLightSample\\RenderGBuffer.hlsl");
 
-	pointLightEffect = g_objMaterial.GetShader("HLSL\\DeferredLightSample\\PointLightEX.hlsl");
+	pointLightEffect = g_objMaterial.GetShader("HLSL\\DeferredLightSample\\PointLight.hlsl");
 
 	directionalLightEffect = g_objMaterial.GetShader("HLSL\\DeferredLightSample\\DirectionalLight.hlsl");
 	finalCombineEffect = g_objMaterial.GetShader("HLSL\\DeferredLightSample\\CombineFinal.hlsl");
@@ -80,9 +80,9 @@ void DeferredLightSample::DrawScene()
 	float clearColor1[4] = { 0.1921568627450980392156862745098f, 0.30196078431372549019607843137255f, 0.47450980392156862745098039215686f, 1.0f };
 
 
-	m_deviceContext->ClearRenderTargetView(pGBufRTV[0], clearColor);
-	m_deviceContext->ClearRenderTargetView(pGBufRTV[1], clearColor);
-	m_deviceContext->ClearRenderTargetView(pGBufRTV[2], clearColor);
+	//m_deviceContext->ClearRenderTargetView(pGBufRTV[0], clearColor);
+	//m_deviceContext->ClearRenderTargetView(pGBufRTV[1], clearColor);
+	//m_deviceContext->ClearRenderTargetView(pGBufRTV[2], clearColor);
 	ClearGBuffer();
 	RenderScene();
 	DrawLights(mTimer.TotalTime());
@@ -247,6 +247,7 @@ void DeferredLightSample::SetDefaultPoint()
 
 	pointLightEffect->PSSetShaderResources(TU_DIFFUSE, colorRT->GetSRView());
 	pointLightEffect->PSSetShaderResources(TU_CUBE, depthRT->GetSRView());
+
 	pointLightEffect->PSSetShaderResources(TU_NORMAL, normalRT->GetSRView());
 	m_deviceContext->PSSetSamplers(0, 1, &LinearClamp);
 	m_deviceContext->PSSetSamplers(1, 1, &PointClamp);

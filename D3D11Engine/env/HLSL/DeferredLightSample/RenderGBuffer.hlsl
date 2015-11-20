@@ -1,4 +1,3 @@
-
 cbuffer  MatrixBuffer: register(b0)
 {
 	matrix worldMatrix;
@@ -20,7 +19,7 @@ struct PixelInputType
 	float3 normal: NORMAL;
 	float3 tangent: TANGENT;
 	float2 tex : TEXCOORD0;
-	float2 Depth : TEXCOORD1;
+	float Depth : TEXCOORD1;
 };
 
 struct PixelOutputType
@@ -43,9 +42,8 @@ PixelInputType VS(VertexInputType input)
 
 
 	output.tex = input.tex;
-	output.Depth.x = output.position.z;
-	output.Depth.y = output.position.w;
-
+	output.Depth = output.position.w;
+	
 	return output;
 }
 
@@ -61,7 +59,6 @@ SamplerState SampleType2: register(s2);
 PixelOutputType PS(PixelInputType input) : SV_TARGET
 {
 	PixelOutputType output;
-
 	output.Color = shaderTexture.Sample(SampleType, input.tex);
 	float4 specularAttributes = SpecularMap.Sample(SampleType1, input.tex);
 	output.Color.a = specularAttributes.r;
@@ -86,7 +83,7 @@ PixelOutputType PS(PixelInputType input) : SV_TARGET
 
 	//specular Power
 	output.Normal.a = specularAttributes.a;
+	output.Depth.r =  input.Depth/1000.0f;
 
-	output.Depth = input.Depth.x / input.Depth.y;
 	return output;
 }

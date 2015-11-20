@@ -1,18 +1,5 @@
-cbuffer  MatrixBuffer: register(b0)
-{
-	matrix World;
-	matrix View;
-	matrix Projection;
-};
-
-cbuffer  MatrixBuffer: register(b1)
-{
-	float3 cameraPosition;
-	float3 lightPosition;
-	float3 Color;
-	float lightRadius;
-	matrix InvertViewProjection;
-};
+#include "Uniforms.hlsl"
+#include "ScreenPos.hlsl"
 
 struct VertexShaderInput
 {
@@ -23,6 +10,7 @@ struct VertexShaderOutput
 {
 	float4 Position : SV_Position;
 	float4 ScreenPosition : TEXCOORD0;
+	float3 iFarRay:TEXCOORD1;
 };
 
 VertexShaderOutput VS(VertexShaderInput input)
@@ -30,9 +18,10 @@ VertexShaderOutput VS(VertexShaderInput input)
 	VertexShaderOutput output;
 	//processing geometry coordinates
 	float4 worldPosition = mul(float4(input.Position, 1), World);
-	float4 viewPosition = mul(worldPosition, View);
-	output.Position = mul(viewPosition, Projection);
+		float4 viewPosition = mul(worldPosition, View);
+		output.Position = mul(viewPosition, Projection);
 	output.ScreenPosition = output.Position;
+	output.iFarRay = GetFarRay(output.Position);
 	return output;
 }
 
@@ -52,29 +41,19 @@ float4 PS(VertexShaderOutput input) : SV_TARGET
 	input.ScreenPosition.xy /= input.ScreenPosition.w;
 	float2 texCoord = 0.5f * (float2(input.ScreenPosition.x, -input.ScreenPosition.y) + 1);
 		//解压缩法线贴图从 (0,1) ---> (-1,1)
-	float4 normalData = normalMap.Sample(SampleType2, texCoord);
-	float3 normal = 2.0f * normalData.xyz - 1.0f;
+		float4 normalData = normalMap.Sample(SampleType2, texCoord);
+		float3 normal = 2.0f * normalData.xyz - 1.0f;
 
-	float specularPower = normalData.a * 255.0f;
+		float specularPower = normalData.a * 255.0f;
 	float specularIntensity = colorMap.Sample(SampleType, texCoord).a;
 
 	float depthVal = depthMap.Sample(SampleType1, texCoord).r;
 
-	//compute screen-space position
-	float4 position;
-	position.xy = input.ScreenPosition.xy;
-	position.z = depthVal;
-	position.w = 1.0f;
-	//transform to world space
-	position = mul(position, InvertViewProjection);
-	position /= position.w;
-
-
-	//surface-to-light vector
-	float3 lightVector = lightPosition.xyz - position.xyz;
+	float3 position = input.iFarRay * depthVal + cCameraPosPS;
+		float3 lightVector = lightPosition.xyz - position.xyz;
 
 		//compute attenuation based on distance - linear attenuation
-	float attenuation = saturate(1.0f - length(lightVector) / lightRadius);
+		float attenuation = saturate(1.0f - length(lightVector) / lightRadius);
 
 	//normalize light vector
 	lightVector = normalize(lightVector);
@@ -86,13 +65,15 @@ float4 PS(VertexShaderOutput input) : SV_TARGET
 		//reflection vector
 		float3 reflectionVector = normalize(reflect(-lightVector, normal));
 		//camera-to-surface vector
-		float3 directionToCamera = normalize(cameraPosition - position);
+		float3 directionToCamera = normalize(cCameraPosPS - position);
 		//compute specular light
 		float specularLight = specularIntensity * pow(saturate(dot(reflectionVector, directionToCamera)), specularPower);
 
 	//control the brightness of the light
 	float lightIntensity = 1.0f;
-	//take into account attenuation and lightIntensity.
-	return attenuation * lightIntensity * float4(diffuseLight.rgb, specularLight);
+	float4  textureColor = attenuation * lightIntensity * float4(diffuseLight.rgb, specularLight);
+
+		//take into account attenuation and lightIntensity.
+		return textureColor;
 
 }

@@ -16,11 +16,11 @@ cbuffer ObjectVS : register(b5)
 cbuffer CameraPS : register(b1)
 {
 	float3 cCameraPosPS;
-	matrix InvertViewProjection;
 }
 
 cbuffer LightPS : register(b3)
 {
+	float3 lightDirection;
 	float3 lightPosition;
 	float3 Color;
 	float lightRadius;
