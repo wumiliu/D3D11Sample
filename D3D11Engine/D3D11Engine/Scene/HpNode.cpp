@@ -124,6 +124,9 @@ void HpNode::MarkDirty()
 
 void HpNode::SetWorldPosition(const Vector3& position)
 {
+	//设置该节点的位置
+	//该节点的位置 = 该节点的局部位置* 父亲的位置
+	// --> 该节点的局部位置 = 该节点的位置 * 父亲inv
 	if (parent_)
 	{
 		Matrix m = parent_->GetWorldTransform();
@@ -178,7 +181,9 @@ void HpNode::UpdateWorldTransform()const
 	}
 	else
 	{
+		//获取父亲节点的位置
 		Matrix parentTransform = parent_->GetWorldTransform();
+		//自己的局部位置*父亲的矩阵 = 自己的世界坐标系
 		worldTransform_ = transform *parentTransform;
 		worldRotation_ = rotation_ * parent_->GetWorldRotation();
 	}
