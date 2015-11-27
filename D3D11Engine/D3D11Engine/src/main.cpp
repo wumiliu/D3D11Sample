@@ -23,7 +23,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	}
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-	ShadowSample theApp(hInstance, 1024, 600);
+	Sample theApp(hInstance, 1024, 600);
 	if (!theApp.Init())
 		return 0;
 	return theApp.Run();

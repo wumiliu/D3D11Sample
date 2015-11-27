@@ -547,6 +547,11 @@ struct Quaternion : public XMFLOAT4
     explicit Quaternion( const Vector4& v ) : XMFLOAT4( v.x, v.y, v.z, v.w ) {}
     explicit Quaternion(_In_reads_(4) const float *pArray) : XMFLOAT4(pArray) {}
     Quaternion(FXMVECTOR V) { XMStoreFloat4( this, V ); }
+	explicit Quaternion(float _x, float _y, float _z)
+	{
+		Quaternion q = Quaternion::CreateFromEulerAngles(_x, _y, _z);
+		*this = q;
+	}
 
     operator XMVECTOR() const { return XMLoadFloat4( this ); }
 

@@ -6,7 +6,7 @@
 #include "Renderer/CommonStates.h"
 #include "BaseCode/Texture/TextureMgr.h"
 #include "Renderer/DeviceManager.h"
-
+#include "MaterialMgr.h"
 GameObject::GameObject()
 {
 	m_strName = "";
@@ -24,8 +24,9 @@ void GameObject::SetMaterial(std::shared_ptr<class D3D11RendererMaterial> materi
 void GameObject::InitResource(GEOMETRY_TYPE type)
 {
 	RendererMaterialDesc desc;
-	desc.strHLSLPath = "HLSL\\GameObject.hlsl";
-	m_MaterialPtr = std::make_shared<D3D11RendererMaterial>(desc);
+
+	 m_MaterialPtr = g_objMaterial.GetShader("HLSL\\GameObject.hlsl");
+
 	GemoetryRenderPtr = std::make_shared<GemoetryRender>();
 
 	GeoGen::MeshData meshData;
@@ -33,7 +34,7 @@ void GameObject::InitResource(GEOMETRY_TYPE type)
 	{
 	case GEOMETRY_TYPE_BOX:
 	{
-		GeoGen::CreateBox(2, 2, 2, meshData);
+		GeoGen::CreateBox(1, 1, 1, meshData);
 
 	}
 	break;

@@ -11,7 +11,7 @@ enum GEOMETRY_TYPE
 class GameObject
 {
 public:
-	GameObject();
+	explicit GameObject();
 	bool GetInitState(){ return m_bInitState; }
 	void InitResource(GEOMETRY_TYPE type = GEOMETRY_TYPE_BOX);
 	void SetTexture(const char* pszName);

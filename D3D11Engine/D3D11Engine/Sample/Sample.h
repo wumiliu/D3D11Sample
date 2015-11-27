@@ -59,6 +59,6 @@ protected:
 	ID3D11DepthStencilState* m_pTestStencilDSState;
 	bool bKeyDown;
 
-
+	std::shared_ptr<class Role> RolePtr;
 };
 

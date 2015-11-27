@@ -1,5 +1,6 @@
 #include "Sample.h"
 #include "SampleBase.h"
+#include "Role.h"
 
 Sample::Sample(HINSTANCE hInstance, int nWidth /*= 1024*/, int nHeight /*= 600*/):
 D3D11App(hInstance)
@@ -39,6 +40,9 @@ void Sample::InitResource()
 	gameSphereObject.SetTexture("Data\\Texture\\ice.dds");
 	g_objSprite.ResetSize(mClientWidth, mClientHeight);
 	CreateScrene();
+
+	RolePtr = std::make_shared<Role>();
+	RolePtr->Init(scene_);
 }
 
 void Sample::CreateScrene()
@@ -71,7 +75,7 @@ void Sample::UpdateScene(float fTotalTime, float fDeltaTime)
 		if (::GetAsyncKeyState('D') & 0x8000)
 			cameraNode_->Translate(Vector3::Right * MOVE_SPEED * dt);
 	}
-
+	RolePtr->UpdateScene(fTotalTime, fDeltaTime);
 }
 
 void Sample::RenderSample()
@@ -85,7 +89,8 @@ void Sample::RenderSample()
 		mView = cameraMain->GetView();
 		mProj = cameraMain->GetProjection();
 	}
-
+	RolePtr->Render(mView, mProj);
+	return;
 	gameObject.Render(Matrix::CreateScale(5, 5, 5), mView, mProj);
 	gameSphereObject.Render(Matrix::CreateScale(3, 3, 3), mView, mProj);
 

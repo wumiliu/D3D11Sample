@@ -165,6 +165,7 @@
     <ClCompile Include="Framework\AnimationHelper.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Role.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -323,6 +324,7 @@
     <ClInclude Include="Framework\AnimationHelper.h">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Role.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Math\SimpleMath.inl">

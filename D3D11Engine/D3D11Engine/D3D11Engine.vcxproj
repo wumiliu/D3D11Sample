@@ -95,6 +95,7 @@
     <ClCompile Include="Renderer\Sprite.cpp" />
     <ClCompile Include="Renderer\SwapChain.cpp" />
     <ClCompile Include="Renderer\VertexTypes.cpp" />
+    <ClCompile Include="Role.cpp" />
     <ClCompile Include="Sample\DeferredLight.cpp" />
     <ClCompile Include="Sample\DeferredLighting.cpp" />
     <ClCompile Include="Sample\DeferredLightSample.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Renderer\Sprite.h" />
     <ClInclude Include="Renderer\SwapChain.h" />
     <ClInclude Include="Renderer\VertexTypes.h" />
+    <ClInclude Include="Role.h" />
     <ClInclude Include="Sample\DeferredLight.h" />
     <ClInclude Include="Sample\DeferredLighting.h" />
     <ClInclude Include="Sample\DeferredLightSample.h" />
