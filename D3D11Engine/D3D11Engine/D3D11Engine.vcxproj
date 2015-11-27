@@ -77,6 +77,7 @@
     <ClCompile Include="BaseCode\Texture\DDSTextureLoader.cpp" />
     <ClCompile Include="BaseCode\Texture\Texture.cpp" />
     <ClCompile Include="BaseCode\Texture\TextureMgr.cpp" />
+    <ClCompile Include="Framework\AnimationHelper.cpp" />
     <ClCompile Include="Framework\Frustum.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\SkyBox.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="Sample\MultipleLightsSamlpe.cpp" />
     <ClCompile Include="Sample\RenderTargetSample.cpp" />
     <ClCompile Include="Sample\Sample.cpp" />
+    <ClCompile Include="Sample\ShadowSample.cpp" />
     <ClCompile Include="Scene\Camera.cpp" />
     <ClCompile Include="Scene\Component.cpp" />
     <ClCompile Include="Scene\HpNode.cpp" />
@@ -124,6 +126,7 @@
     <ClInclude Include="BaseCode\Texture\PlatformHelpers.h" />
     <ClInclude Include="BaseCode\Texture\Texture.h" />
     <ClInclude Include="BaseCode\Texture\TextureMgr.h" />
+    <ClInclude Include="Framework\AnimationHelper.h" />
     <ClInclude Include="Framework\Frustum.h" />
     <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\SkyBox.h" />
@@ -157,6 +160,7 @@
     <ClInclude Include="Sample\RenderTargetSample.h" />
     <ClInclude Include="Sample\Sample.h" />
     <ClInclude Include="Sample\SampleBase.h" />
+    <ClInclude Include="Sample\ShadowSample.h" />
     <ClInclude Include="Scene\Camera.h" />
     <ClInclude Include="Scene\Component.h" />
     <ClInclude Include="Scene\HpNode.h" />

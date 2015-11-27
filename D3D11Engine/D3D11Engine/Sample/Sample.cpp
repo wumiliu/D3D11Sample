@@ -34,9 +34,9 @@ void Sample::InitResource()
 	SkyBoxPtr = std::make_shared<SkyBox>();
 	SkyBoxPtr->InitResource();
 	gameObject.InitResource(GEOMETRY_TYPE_GRID);
-	gameObject.SetTexture("Data\\Texture\\Ice.dds");
+	gameObject.SetTexture("Data\\Texture\\metal001.dds");
 	gameSphereObject.InitResource(GEOMETRY_TYPE_SPHERE);
-	gameSphereObject.SetTexture("Data\\Texture\\wall01.dds");
+	gameSphereObject.SetTexture("Data\\Texture\\ice.dds");
 	g_objSprite.ResetSize(mClientWidth, mClientHeight);
 	CreateScrene();
 }

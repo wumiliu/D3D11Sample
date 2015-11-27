@@ -110,4 +110,15 @@ void GameObject::SetLightBuffer(Vector3 lightPosition, Vector4 ambientColor, Vec
 
 }
 
+ID3D11ShaderResourceView* GameObject::GetTexture()
+{
+	CTexture* pTexture = g_objTextureMgr.GetTexture(m_strName);
+	if (pTexture)
+	{
+		return pTexture->GetShaderResourceView();
+	}
+	return NULL;
+
+}
+
 

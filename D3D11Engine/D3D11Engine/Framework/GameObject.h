@@ -15,6 +15,7 @@ public:
 	bool GetInitState(){ return m_bInitState; }
 	void InitResource(GEOMETRY_TYPE type = GEOMETRY_TYPE_BOX);
 	void SetTexture(const char* pszName);
+	ID3D11ShaderResourceView* GetTexture();
 	void SetLightBuffer(Vector3 lightPosition, Vector4 ambientColor, Vector4 diffuseColor);
 	void Render(Matrix world, Matrix view, Matrix proj, Matrix lightViewMatrix,
 		Matrix lightProjectionMatrix, ID3D11ShaderResourceView* depthMapTexture);

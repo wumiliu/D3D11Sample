@@ -159,6 +159,12 @@
     <ClCompile Include="Sample\DeferredLightSample.cpp">
       <Filter>Sample</Filter>
     </ClCompile>
+    <ClCompile Include="Sample\ShadowSample.cpp">
+      <Filter>Sample</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\AnimationHelper.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Windows\D3D11App.h">
@@ -310,6 +316,12 @@
     </ClInclude>
     <ClInclude Include="Sample\DeferredLightSample.h">
       <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample\ShadowSample.h">
+      <Filter>Sample</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\AnimationHelper.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
